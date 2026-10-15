@@ -43,6 +43,8 @@ Pass proper nouns as hints. **Show the user the transcript** and fix misheard wo
 
 ## 3. Concept and shot list (the part that makes it good)
 
+- For long explainers (5+ min): find the script's own structure (cold open, setup, numbered points, recap, next-video tease) and give each section a recurring device: a numbered "reason" card, a colour, a music chapter. Store every word's times in `cues.json` (`words: {word: [t1, t2, ...]}`) and look words up per scene (`wt(word, sceneStart)`), since the same word recurs.
+
 - Find the script's **spine**: one image or metaphor that can carry the whole piece and return at the end (e.g. "every villain is a broken mirror" became a mirror that cracks on "broken", shows a villain in each shard, and closes the film as a shattered title card).
 - One shot per sentence or idea; scene changes on sentence boundaries.
 - Pick **hit words**: nouns and verbs that can become a visual event (a crack on "broken", a coin flip on "coin", a rip on "scarred", a line drawn on "line"). Aim for 1–3 per sentence. Short on-screen keywords in the style's typography (ransom notes, HUD labels, hand-lettering) echo the voice without becoming full subtitles.
@@ -65,6 +67,8 @@ Start from `templates/index.html`. Follow the chosen style prompt's **Suggested 
 - Key events to words: `on(Wd.x)`, `lift(Wd.x)` (slap: scale up, overshoot, settle), `prog(Wd.x, dur)`. A hit should land on the word's start, or one step before it.
 - **Fonts must exist locally.** A missing font makes `document.fonts.load` reject and the render hangs at `__ready`. It does not fall back.
 - In this container, Canvas 2D is more reliable than WebGL/Three.js. Hand-project simple 3D, such as wireframes, in 2D.
+- Hybrid styles work: e.g. flat-vector shapes that move smoothly with elastic pops, plus ink outlines and cel FX redrawn on 2s (line boil). Pick the base style for structure and the second for texture, and state the split up front.
+- Code-drawn characters can carry a story if each has one signature trait (a hairstyle, a mark, a colour) and a flat geometric body; draw a `person()` helper with pose and face options and reuse it everywhere.
 
 ## 6. Storyboard and approval (always before the long render)
 
@@ -80,14 +84,16 @@ Make a separate `vertical.html` (1080×1920) with the same helpers, cues and aud
 
 ## 8. Sound
 
-1. Copy `templates/bed.py`, pick the recipe matching the prompt's `Sound:` line, and place SFX at word times. Export the bed at about −20 LUFS.
-2. `$K/scripts/mix.sh narration.mp3 out/bed.wav out/audio.wav <duration>`: voice cleanup, sidechain ducking of the bed under the voice, two-pass loudnorm to **−14 LUFS / −1.5 dBTP**.
+1. Copy `templates/bed.py`, pick the recipe matching the prompt's `Sound:` line (or the subject: e.g. `guofeng` pentatonic for an East-Asian-flavoured world), and place SFX at word times. Export the bed at about −20 LUFS.
+   - **Longer than ~2 minutes: render in chapters.** One process for a 9-minute bed was OOM-killed at ~14 GB (every track and bus is a full-length buffer). Make the bed script take `<t0> <t1> <out>` (size the recipe to `t1 - t0 + 0.6`, only place SFX inside the window), then run `$K/scripts/bed_chapters.sh <venv python> bed.py out/bed.wav <duration> <boundaries...>`. Put boundaries on section changes; each chapter becomes its own music cue, which suits explainers with numbered sections.
+2. `$K/scripts/mix.sh narration.mp3 out/bed.wav out/audio.wav <duration>`: voice cleanup, sidechain ducking of the bed under the voice, two-pass loudnorm to **−14 LUFS**, then an oversampled limiter that keeps the true peak under −1 dBTP.
 3. The renderer muxes `demos/<slug>/out/audio.wav` automatically.
-- Missing instrument samples (piano, kalimba, harp) raise `LibsndfileError`; the template marks them unavailable. Use `keys='rhodes'` for lofi.
+- The repo's `samples/index.json` lists instrument sets that are missing or partial on disk (piano, kalimba, harp, dantranh...), which raise `LibsndfileError` mid-render. The template counts an instrument as available only when every indexed file exists, so recipes use their synth fallbacks.
 - With no narration, export the bed itself at `lufs=-14, tp=-2.3` (AAC adds ~0.8 dB of peak), then mux with `-t <duration>`.
 
 ## 9. Render, monitor, verify
 
+- **Long videos: render a pilot first.** `--from 0 --to <s> --out demos/<slug>/out/pilot_video.mp4` renders one section; mux its audio slice with `ffmpeg -i pilot_video.mp4 -i out/audio.wav -map 0:v -map 1:a -c:v copy -c:a aac -t <s>`. Get approval on pacing and sound before the multi-hour full render. Flat/line styles render at ~0.5 s/frame, so about 2 h for 9 minutes at 30 fps.
 - Launch the render with Bash `run_in_background` and a long timeout; you'll be notified when it finishes. `$K/scripts/progress.sh` shows frames done, since the r.sh log is buffered until the end.
 - `$K/scripts/check.sh video.mp4 sync.jpg <hit-word times...>` checks specs, loudness, held-frame stepping, and frames either side of each hit. **Look at the sync sheet.**
 
