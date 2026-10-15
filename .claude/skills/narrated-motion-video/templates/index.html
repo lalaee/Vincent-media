@@ -1,0 +1,57 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>html,body{margin:0;background:#111;overflow:hidden}canvas{display:block}</style></head>
+<body>
+<!-- Narration-driven film page for mg-styles-15's harness/render.mjs.
+     Contract: window.DEMO = {width,height,fps,duration}; window.renderAt(t) draws time t; window.__ready = true.
+     Every frame is a pure function of t (no clocks, seeded randomness only).
+     Copy into <mg>/demos/<slug>/ with cues.json; for 9:16 copy to vertical.html and change W/H + layouts. -->
+<canvas id="F" width="1920" height="1080"></canvas>
+<script type="module">
+const C = await (await fetch('cues.json')).json();   // { fps, step, duration, scenes:[{id,t}], w:{word: seconds} }
+const Wd = C.w;
+
+// ---- fonts: every font must be a local file; a missing font makes document.fonts.load reject and the
+// ---- render hangs at __ready (it does NOT silently fall back). Load each one explicitly.
+for (const [fam, file] of [/* ['Anton', 'fonts/Anton-Regular.ttf'] */]) { const f = new FontFace(fam, `url(${file})`); await f.load(); document.fonts.add(f); }
+
+// ---- images: preload everything before __ready
+const load = (src) => new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = no; i.src = src; });
+const IMG = {};   // e.g. IMG.hero = await load('cut/hero.png');
+
+const W = 1920, H = 1080, TAU = Math.PI * 2, D2R = Math.PI / 180;
+const F = document.getElementById('F'); F.width = W; F.height = H; const x = F.getContext('2d');
+const clamp = (v) => Math.max(0, Math.min(1, v));
+const eo = (p) => 1 - Math.pow(1 - p, 3);
+const hash = (n) => { const s = Math.sin(n * 127.1 + 311.7) * 43758.5453; return s - Math.floor(s); };
+
+// ---- style clock. Set C.step to the style's animation rate: 12 (collage/stop-motion), 12 on 2s at 24 fps (cel),
+// ---- or C.fps for smooth styles. ST is the quantised time every scene reads; STEP drives hand-placed jitter.
+let ST = 0, STEP = 0;
+const on = (t0) => ST >= t0;                                          // has this word been spoken yet?
+const steps = (t0) => Math.floor((ST - t0) * C.step + 1e-6);          // whole steps since t0
+const prog = (t0, d) => eo(clamp((ST - t0) / d));                     // eased 0..1 over d seconds from t0
+const lift = (t0) => { if (ST < t0) return null; const k = steps(t0); return k <= 0 ? 1 : k === 1 ? -0.12 : 0; };   // "slap": big, overshoot, settle
+const jit = (id, a = 1.5) => [(hash(id * 7.3 + STEP * 1.9) - 0.5) * 2 * a, (hash(id * 3.1 + STEP * 2.7) - 0.5) * 2 * a];
+
+// ---- scenes: one function per shot in the shot list. Key every hit to a word: on(Wd.word), lift(Wd.word), prog(Wd.word, d).
+// ---- Land the visual ON the word's start time (or one step before it): late hits read as out of sync.
+const SCENES = {
+  opening(t) {
+    x.fillStyle = '#222'; x.fillRect(0, 0, W, H);
+    // if (on(Wd.someword)) { ... }
+  },
+};
+
+window.DEMO = { width: W, height: H, fps: C.fps, duration: C.duration };
+window.renderAt = async (t) => {
+  ST = Math.floor(t * C.step + 1e-6) / C.step; STEP = Math.floor(t * C.step + 1e-6);
+  let si = 0; C.scenes.forEach((s, i) => { if (ST >= s.t) si = i; });
+  x.setTransform(1, 0, 0, 1, 0, 0); x.globalAlpha = 1; x.globalCompositeOperation = 'source-over';
+  SCENES[C.scenes[si].id](ST);
+  // finishing pass (grain, scanlines, glow, paper multiply...) goes here, per the style prompt
+};
+await window.renderAt(0);
+window.__ready = true;
+</script>
+</body></html>
