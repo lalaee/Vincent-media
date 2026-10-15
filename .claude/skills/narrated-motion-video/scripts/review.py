@@ -5,11 +5,12 @@ Level 1 (numbers only, no images to look at):
   specs + loudness, empty-screen stretches, long stretches where nothing new appears,
   cue words never spoken in their scene (explainer-series cues.json + scenes.js),
   on-screen words that look like names but are never spoken (catches YI vs "Jae").
+Level 3: one tile per beat (~1 per 2 s), stamped the same way; before publishing.
 Level 2 (contact sheets): 2 frames per scene, each stamped with its time, scene id and
   the words being spoken, so "does the picture match the voice?" is a glance per tile.
 
 Usage: review.py video.mp4 transcript.json outdir [--cues cues.json] [--scenes scenes.js|index.html]
-                 [--font label.ttf] [--level 1|2] [--per 2] [--empty 1.5] [--stale 8]
+                 [--font label.ttf] [--level 1|2|3] [--per 2] [--empty 1.5] [--stale 8]
 Then LOOK at outdir/sheet-*.jpg (16 tiles each). Zoom with --stills on anything doubtful.
 """
 import argparse, json, re, subprocess, sys, os
@@ -20,6 +21,7 @@ ap = argparse.ArgumentParser()
 ap.add_argument('video'); ap.add_argument('transcript'); ap.add_argument('out')
 ap.add_argument('--cues'); ap.add_argument('--scenes'); ap.add_argument('--font')
 ap.add_argument('--level', type=int, default=2); ap.add_argument('--per', type=int, default=2)
+ap.add_argument('--step', type=float, default=2.0, help='level 3 sampling step (s)')
 ap.add_argument('--empty', type=float, default=1.5, help='flag empty screens longer than this (s)')
 ap.add_argument('--stale', type=float, default=8, help='flag stretches with nothing new longer than this (s)')
 a = ap.parse_args()
@@ -96,7 +98,28 @@ if src:
     if odd: say(f"  CHECK   on-screen words never spoken (spelling? intended?): {', '.join(odd)}")
 say(f"  {issues} issue(s), {len(stale)} static stretch(es)")
 
+def make_sheets(picks, prefix):
+    from io import BytesIO
+    TW, TH, CAP, COLS, ROWS = 480, 270, 64, 4, 4
+    try: font = ImageFont.truetype(a.font, 19) if a.font else ImageFont.load_default(size=19)
+    except Exception: font = ImageFont.load_default()
+    sheets = []
+    for n in range(0, len(picks), COLS * ROWS):
+        page = picks[n:n + COLS * ROWS]
+        S = Image.new('RGB', (COLS * TW, ROWS * (TH + CAP)), 'white'); d = ImageDraw.Draw(S)
+        for k, (sid, t) in enumerate(page):
+            png = subprocess.run(['ffmpeg', '-v', 'error', '-ss', f'{t:.2f}', '-i', a.video, '-frames:v', '1', '-vf', f'scale={TW}:{TH}',
+                                  '-f', 'image2pipe', '-vcodec', 'png', '-'], capture_output=True).stdout
+            x0, y0 = (k % COLS) * TW, (k // COLS) * (TH + CAP)
+            if png: S.paste(Image.open(BytesIO(png)).convert('RGB'), (x0, y0))
+            d.rectangle([x0, y0 + TH, x0 + TW - 1, y0 + TH + CAP - 1], fill='#111')
+            d.text((x0 + 6, y0 + TH + 4), f"{mmss(t)}  {sid}", font=font, fill='#FFD54A')
+            d.text((x0 + 6, y0 + TH + 32), '"' + spoken(t - 2.0, t + 1.0)[-46:] + '"', font=font, fill='white')
+        p = os.path.join(a.out, f'{prefix}-{n // (COLS * ROWS) + 1:02d}.jpg'); S.save(p, quality=82); sheets.append(p)
+    return sheets
+
 # ---------- level 2: contact sheets
+sc = None
 if a.level >= 2:
     if isinstance(scenes, list): sc = [(s['id'], s['t'], (scenes[i + 1]['t'] if i + 1 < len(scenes) else dur)) for i, s in enumerate(scenes)]
     else:   # no cues: split on big picture changes
@@ -108,23 +131,15 @@ if a.level >= 2:
         L = t1 - t0
         ts = [t0 + L * 0.35, t1 - min(0.5, L * 0.1)] if a.per >= 2 and L > 2.5 else [t0 + L * 0.6]
         picks += [(sid, t) for t in ts]
-    TW, TH, CAP, COLS, ROWS = 480, 270, 64, 4, 4
-    try: font = ImageFont.truetype(a.font, 19) if a.font else ImageFont.load_default(size=19)
-    except Exception: font = ImageFont.load_default()
-    sheets = []
-    for n in range(0, len(picks), COLS * ROWS):
-        page = picks[n:n + COLS * ROWS]
-        S = Image.new('RGB', (COLS * TW, ROWS * (TH + CAP)), 'white'); d = ImageDraw.Draw(S)
-        for k, (sid, t) in enumerate(page):
-            png = subprocess.run(['ffmpeg', '-v', 'error', '-ss', f'{t:.2f}', '-i', a.video, '-frames:v', '1', '-vf', f'scale={TW}:{TH}',
-                                  '-f', 'image2pipe', '-vcodec', 'png', '-'], capture_output=True).stdout
-            from io import BytesIO
-            x0, y0 = (k % COLS) * TW, (k // COLS) * (TH + CAP)
-            if png: S.paste(Image.open(BytesIO(png)).convert('RGB'), (x0, y0))
-            d.rectangle([x0, y0 + TH, x0 + TW - 1, y0 + TH + CAP - 1], fill='#111')
-            d.text((x0 + 6, y0 + TH + 4), f"{mmss(t)}  {sid}", font=font, fill='#FFD54A')
-            d.text((x0 + 6, y0 + TH + 32), '"' + spoken(t - 2.0, t + 1.0)[-46:] + '"', font=font, fill='white')
-        p = os.path.join(a.out, f'sheet-{n // (COLS * ROWS) + 1:02d}.jpg'); S.save(p, quality=82); sheets.append(p)
+    sheets = make_sheets(picks, 'sheet')
     say(f"LEVEL 2  {len(picks)} frames from {len(sc)} scenes -> {len(sheets)} sheets in {a.out} (look at every one)")
+# ---------- level 3: a frame every --step s, skipping frames that look the same as the last one kept
+if a.level >= 3:
+    beats, last = [], None
+    for i in range(0, len(fr), max(1, int(a.step * FPS_S))):
+        if last is None or (np.abs(fr[i] - fr[last]).sum(-1) > 90).mean() > 0.004: beats.append(i / FPS_S); last = i
+    sid_at = lambda t: next((sid for sid, t0, t1 in reversed(sc) if t >= t0), '') if sc else ''
+    sheets3 = make_sheets([(sid_at(t), t) for t in beats], 'beat')
+    say(f"LEVEL 3  {len(beats)} distinct frames (every {a.step:g}s, repeats skipped) -> {len(sheets3)} sheets in {a.out} (beat-*.jpg; look at every one)")
 open(os.path.join(a.out, 'review.txt'), 'w').write('\n'.join(report) + '\n')
 sys.exit(1 if issues else 0)
