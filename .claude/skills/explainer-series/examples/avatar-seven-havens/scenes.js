@@ -71,10 +71,15 @@ export default (E) => {
     },
     pastlives() {
     ground(P.night); const ppl = [['white', P.fire, P.skinA, 'ROKU', wt('roku')], ['bald', P.air, P.skinA, 'AANG', wt('aang')], ['tail', P.water, P.skinK, 'KORRA', wt('korra')]];
-    ppl.forEach(([hr, c, sk, n, t0], i) => scaled(420 + i * 540, 760, pop(t0 - 0.2), () => { person(420 + i * 540, 760, 1.0, { hair: hr, top: c, skin: sk, arrow: hr === 'bald', id: 2300 + i * 40 }); label(n, 420 + i * 540, 860, 52, P.light, { weight: 700 }); }));
-    if (on(wt('aang'))) ink([[540, 300], [600, 220], [780, 220], [840, 300]], 2420, { w: 10, color: P.spirit, len: prog(wt('aang'), 0.5) });
-    if (on(wt('korra'))) ink([[1080, 300], [1140, 220], [1320, 220], [1380, 300]], 2430, { w: 10, color: P.spirit, len: prog(wt('korra'), 0.5) });
-    if (on(wt('statues'))) hand('legends · statues · temples', 960, 110, 76, P.air);
+    ppl.forEach(([hr, c, sk, n, t0], i) => {                       // dim "statues" from the start, full colour when named
+      const px = 420 + i * 540, lit = on(t0 - 0.2);
+      scaled(px, 760, lit ? 1 + 0.12 * Math.sin(Math.PI * E.prog(t0 - 0.2, 0.45)) : pop(E.S0 + 0.3 + i * 0.25), () => {
+        x.save(); if (!lit) x.globalAlpha = 0.3; person(px, 760, 1.0, { hair: hr, top: c, skin: sk, arrow: hr === 'bald', id: 2300 + i * 40 }); x.restore();
+        if (lit) label(n, px, 860, 52, P.light, { weight: 700 }); }); });
+    if (!on(wt('statues'))) { if (on(E.S0 + 0.3)) hand('YOUR PAST LIVES', 960, 140, 96, P.spirit); if (on(wt('asset'))) hand('= your greatest asset', 960, 250, 64, P.light); }
+    if (on(wt('aang'))) ink([[450, 385], [540, 300], [840, 300], [930, 385]], 2420, { w: 10, color: P.spirit, len: prog(wt('aang'), 0.5) });     // Aang <-> Roku
+    if (on(wt('korra'))) ink([[990, 385], [1080, 300], [1380, 300], [1470, 385]], 2430, { w: 10, color: P.spirit, len: prog(wt('korra'), 0.5) }); // Korra <-> Aang
+    if (on(wt('statues'))) hand('legends · statues · temples', 960, 140, 76, P.air);
     },
     blamed() {
     ground('#E9DDC2'); card(960, 540, 1200, 820, P.light, 2500, 1);

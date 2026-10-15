@@ -43,6 +43,7 @@ python3 $K/scripts/fix_names.py transcript.json series/<name>/fixes.json     # t
 python3 $N/scripts/words.py transcript.json                                   # every word with its time
 #   write plan.json + scenes.js (below)
 python3 $K/scripts/build_cues.py transcript.json plan.json cues.json
+python3 $K/scripts/check_cues.py cues.json scenes.js                          # every cue word spoken in its scene?
 ../../../r.sh demos/<slug> --stills <1-2 times per scene>                     # storyboard frames
 ../../../venv/bin/python $N/scripts/storyboard.py panels.tsv storyboard.png 4 fonts/<label>.ttf
 #   approval  ->  sound
@@ -95,6 +96,7 @@ Draw the rest as **custom scenes** with the engine vocabulary: `person(cx, cy, s
 - Prefer showing over captioning: a few hand-lettered keywords per scene, never full subtitles (captions go in the `.srt`).
 - Sensitive beats (deaths, violence) use established symbols: fading figures, broken links, a light going out.
 - Long scenes (> 12 s) need several word-keyed beats, or split them.
+- Something must be on screen within ~0.5 s of every scene start (a title, dim figures that light up when named). Never leave a scene empty until its first cue word.
 
 ## Re-voicing an episode (new narrator, new take)
 
@@ -103,12 +105,14 @@ The visuals key off words, so a new recording of the same script only needs its 
 transcribe.py new.mp3 transcript_new.json <names...> && fix_names.py transcript_new.json series/<name>/fixes.json
 python3 $K/scripts/retime.py transcript_old.json transcript_new.json plan.json plan_new.json   # aligns word by word
 python3 $K/scripts/build_cues.py transcript_new.json plan_new.json cues.json
+python3 $K/scripts/check_cues.py cues.json scenes.js      # MUST be clean
 ```
+A new voice gets names transcribed differently ("Aang" > "Ang", "Toph" > "Tof"). A cue word that is never spoken silently never fires: the character or highlight just doesn't appear. `check_cues.py` lists them; add each to `fixes.json` and rebuild.
 Then check sync stills on a handful of hit words, rebuild the bed on the new chapters, and render a pilot. `build_cues.py` also indexes spelled-out numbers as digits ("two hundred and twenty five" -> `225`), so number triggers survive however the narrator reads them.
 
 ## Review gates (always)
 
-1. **Transcript:** names fixed.
+1. **Transcript:** names fixed, and `check_cues.py` clean.
 2. **Storyboard:** about 30 frames across the whole episode. Look at your own sheet first: overlaps, tiny figures, text on heads, missing glyphs (Fredoka has no arrows, so write `>`).
 3. **Pilot:** the first section rendered with the full mix; the user checks pacing, music level and characters.
 4. **Full render.** Report specs, hits checked, and 2–4 honest weaknesses.
