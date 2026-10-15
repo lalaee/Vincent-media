@@ -1,0 +1,102 @@
+{
+ "name": "Ladeeda Worlds (channel look: flat vector + line boil, dark)",
+ "palette": {
+  "paper": "#F4EAD5",
+  "ink": "#1D1A17",
+  "light": "#FFF8EA",
+  "grey": "#8C8577",
+  "red": "#C7362B",
+  "accent": "#2F7FC1",
+  "accent2": "#7B5CD6",
+  "highlight": "#F2C14E",
+  "glow": "#7B5CD6",
+  "night": "#15131D",
+  "sand": "#E3C48A",
+  "ok": "#4F8A3C",
+  "skin": "#B97A4E",
+  "air": "#F2A33A",
+  "water": "#2F7FC1",
+  "earth": "#4F8A3C",
+  "fire": "#D8432E",
+  "spirit": "#3FC1B0",
+  "spirit2": "#7B5CD6",
+  "skinP": "#B97A4E",
+  "skinA": "#F1C9A5",
+  "skinK": "#A86B40",
+  "wall": "#D9C76A",
+  "wallDark": "#BFAE55",
+  "ceiling": "#E6DA9C",
+  "carpet": "#9C8A45",
+  "far": "#4E4622",
+  "mars": "#B4472F",
+  "marsDark": "#7E2D1E",
+  "sky": "#1A1424",
+  "sepia": "#C9A877",
+  "sepiaDark": "#8A6A44",
+  "gold": "#F2C14E",
+  "purple": "#7B5CD6"
+ },
+ "fonts": [
+  {
+   "family": "Brush",
+   "file": "fonts/CaveatBrush.ttf",
+   "weight": "400"
+  },
+  {
+   "family": "Fredoka",
+   "file": "fonts/Fredoka.ttf",
+   "weight": "300 700"
+  }
+ ],
+ "type": {
+  "hand": "Brush",
+  "label": "Fredoka"
+ },
+ "paper": "/assets/textures/paper/Paper001_4K_color.jpg",
+ "paperAlpha": 0.12,
+ "boilEvery": 2.5,
+ "personScale": 1.35,
+ "wipe": [
+  "#F2C14E",
+  "#7B5CD6",
+  "#B4472F",
+  "#1D1A17"
+ ],
+ "section": {
+  "label": "WORLD",
+  "bg": "#1D1A17",
+  "colors": [
+   "#F2A33A",
+   "#2F7FC1",
+   "#4F8A3C",
+   "#D8432E",
+   "#3FC1B0",
+   "#7B5CD6",
+   "#C7362B"
+  ]
+ },
+ "characters": {
+  "you": {
+   "skin": "#B97A4E",
+   "top": "#F2C14E",
+   "hair": "bob"
+  }
+ },
+ "music": {
+  "recipe": "darksynth",
+  "level": -25,
+  "args": {
+   "bpm": 92,
+   "key": "D"
+  },
+  "wipe": "swish",
+  "card": [
+   "impact:soft",
+   "chime"
+  ]
+ },
+ "render": {
+  "fps": 30,
+  "secondsPerFrame": 0.45
+ }
+}

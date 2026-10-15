@@ -10,7 +10,7 @@ export function titleCard(E, { kicker, title, sub, subWord, icons = [], drawIcon
     icons.forEach((ic, i) => E.scaled(380 + i * 380, 230, E.pop(E.S0 + i * 0.12), () => drawIcon ? drawIcon(ic, 380 + i * 380, 230, 70, 800 + i * 50) : E.shape(E.circ(380 + i * 380, 230, 70), 800 + i * 50, ic)));
     if (kicker && E.on(E.S0 + 0.5)) E.hand(kicker, 960, 470, 120, P.light);
     E.scaled(960, 650, E.pop(titleWord ? E.wt(titleWord) : E.S0 + 0.8), () => E.hand(title, 960, 650, 220, P.highlight || P.light));
-    if (sub && E.on(subWord ? E.wt(subWord) : E.S0 + 1.2)) { E.card(960, 890, Math.max(520, sub.length * 30), 110, P.accent2 || P.accent, 860, -2); E.label(sub, 960, 892, 60, P.ink, { weight: 700 }); }
+    if (sub && E.on(subWord ? E.wt(subWord) : E.S0 + 1.2)) { E.card(960, 890, Math.max(520, sub.length * 37 + 60), 110, P.accent2 || P.accent, 860, -2); E.label(sub, 960, 892, 60, P.ink, { weight: 700 }); }
   };
 }
 export function warning(E, { text, word }) {
