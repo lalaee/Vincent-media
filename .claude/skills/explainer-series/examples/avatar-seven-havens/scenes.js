@@ -143,8 +143,8 @@ export default (E) => {
     support() {
     ground(P.paper); label('YOUR SUPPORT SYSTEM', 960, 120, 56, P.ink, { weight: 700 });
     scaled(400, 560, pop(wt('white') - 0.1), () => { shape(circ(400, 500, 160), 4700, P.light); for (let i = 0; i < 8; i++) { const a = i / 8 * TAU; shape(circ(400 + Math.cos(a) * 80, 500 + Math.sin(a) * 80, 50), 4710 + i * 3, '#F7F3EA', { line: 3 }); } label('WHITE LOTUS', 400, 740, 44); hand('(hiding)', 400, 810, 50, P.grey); });
-    if (on(wt('hoverboard'))) scaled(960, 700, pop(wt('hoverboard') - 0.2), () => { person(960, 640 + Math.sin(E.T * 4) * 10, 0.8, { top: '#3A3F4A', hair: 'bob', arms: 'wave', id: 4800 }); shape([[820, 680], [1100, 680], [1080, 720], [840, 720]], 4840, P.air); label('YI', 960, 800, 44); });
-    if (on(wt('jeet'))) scaled(1520, 700, pop(wt('jeet') - 0.2), () => { shape(circ(1520, 620, 150, 120), 4900, '#C98C4A'); shape([[1420, 520], [1440, 440], [1480, 510]], 4910, '#C98C4A', { line: 4 }); shape([[1620, 520], [1600, 440], [1560, 510]], 4920, '#C98C4A', { line: 4 }); x.fillStyle = P.ink; x.beginPath(); x.arc(1480, 600, 12, 0, TAU); x.arc(1560, 600, 12, 0, TAU); x.fill(); label('JEET', 1520, 800, 44); });
+    if (on(wt('hoverboard'))) scaled(960, 700, pop(wt('hoverboard') - 0.2), () => { person(960, 640 + Math.sin(E.T * 4) * 10, 0.8, { top: '#3A3F4A', hair: 'bob', arms: 'wave', id: 4800 }); shape([[820, 680], [1100, 680], [1080, 720], [840, 720]], 4840, P.air); label('JAE', 960, 800, 44); });
+    if (on(wt('geet'))) scaled(1520, 700, pop(wt('geet') - 0.2), () => { shape(circ(1520, 620, 150, 120), 4900, '#C98C4A'); shape([[1420, 520], [1440, 440], [1480, 510]], 4910, '#C98C4A', { line: 4 }); shape([[1620, 520], [1600, 440], [1560, 510]], 4920, '#C98C4A', { line: 4 }); x.fillStyle = P.ink; x.beginPath(); x.arc(1480, 600, 12, 0, TAU); x.arc(1560, 600, 12, 0, TAU); x.fill(); label('GEET', 1520, 800, 44); });
     },
     portal() {
     ground(P.night); for (let i = 0; i < 9; i++) shape(rectP(120 + i * 200, 1080 - 200 - (i * 97 % 300), 150, 220 + (i * 97 % 300)), 5000 + i, '#2E3B55', { smooth: false });
