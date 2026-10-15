@@ -10,7 +10,7 @@ The engine (ink brush, flat shapes, characters, cards, FX, section cards, wipes)
 are shared, so an episode is mostly *deciding* what to show and when, not re-building the look.
 
 `$N` = the narrated-motion-video skill dir (setup, transcription, mixing, checks, storyboard, delivery scripts).
-`$K` = this skill's dir. `examples/avatar-seven-havens/` is a complete worked episode: bible, name fixes, plan and 42 scenes.
+`$K` = this skill's dir. `examples/avatar-seven-havens/` is a complete worked episode: bible, name fixes, plan (original voice; `plan_charlotte.json` is the same plan retimed to the second narrator) and 42 scenes.
 `examples/green-lantern-sample/` shows starting a *new* series: a bible (masked heroes, a glowing-construct look, darksynth) and 5 sample scenes (cast line-up, a construct drawing itself, an oath card, a section card, versus). Render a sample like this for the user before episode 1 of any new series.
 
 ## The format (what made video 1 work)

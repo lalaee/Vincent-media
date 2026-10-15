@@ -1,0 +1,510 @@
+{
+ "fps": 30,
+ "tail": 0.8,
+ "scenes": [
+  [
+   "power",
+   0.0
+  ],
+  [
+   "bridge",
+   6.058
+  ],
+  [
+   "prison",
+   9.502
+  ],
+  [
+   "history",
+   15.22
+  ],
+  [
+   "broken",
+   24.578
+  ],
+  [
+   "title",
+   32.536
+  ],
+  [
+   "warning",
+   38.491
+  ],
+  [
+   "timeline",
+   44.916
+  ],
+  [
+   "nations",
+   55.797
+  ],
+  [
+   "cataclysm",
+   68.057
+  ],
+  [
+   "havens",
+   79.727
+  ],
+  [
+   "walls",
+   96.106
+  ],
+  [
+   "smaller",
+   111.374
+  ],
+  [
+   "sec1",
+   127.801
+  ],
+  [
+   "pastlives",
+   130.458
+  ],
+  [
+   "blamed",
+   148.641
+  ],
+  [
+   "cursing",
+   182.679
+  ],
+  [
+   "sec2",
+   195.962
+  ],
+  [
+   "boogey",
+   199.653
+  ],
+  [
+   "rule",
+   205.56
+  ],
+  [
+   "triumph",
+   215.967
+  ],
+  [
+   "sec3",
+   252.176
+  ],
+  [
+   "agree",
+   254.673
+  ],
+  [
+   "draft",
+   268.061
+  ],
+  [
+   "karthik",
+   300.125
+  ],
+  [
+   "sec4",
+   311.66
+  ],
+  [
+   "twins",
+   314.097
+  ],
+  [
+   "doors",
+   337.177
+  ],
+  [
+   "split",
+   345.808
+  ],
+  [
+   "halves",
+   374.968
+  ],
+  [
+   "sec5",
+   394.372
+  ],
+  [
+   "teachers",
+   396.801
+  ],
+  [
+   "support",
+   423.801
+  ],
+  [
+   "sec6",
+   458.38
+  ],
+  [
+   "portal",
+   460.594
+  ],
+  [
+   "posters",
+   487.534
+  ],
+  [
+   "sec7",
+   514.429
+  ],
+  [
+   "cycle",
+   517.158
+  ],
+  [
+   "lightning",
+   522.066
+  ],
+  [
+   "vaatu",
+   541.98
+  ],
+  [
+   "recap",
+   589.34
+  ],
+  [
+   "next",
+   614.314
+  ]
+ ],
+ "sections": {
+  "1": "YOUR LAST LIFE IS THE VILLAIN",
+  "2": "TWO ELEMENTS = A CRIME",
+  "3": "EVERYONE IS HUNTING YOU",
+  "4": "YOUR TWIN TAKES THE FALL",
+  "5": "NO TEACHERS LEFT",
+  "6": "THE JOB IS FORBIDDEN",
+  "7": "THE CYCLE IS BREAKING"
+ },
+ "chapters": [
+  0,
+  44.916,
+  127.801,
+  195.962,
+  252.176,
+  311.66,
+  394.372,
+  458.38,
+  514.429,
+  589.34,
+  634.78
+ ],
+ "sfx": [
+  {
+   "word": "four",
+   "after": 0.0,
+   "kind": "magic",
+   "gain": -12
+  },
+  {
+   "word": "bridge",
+   "after": 5.037,
+   "kind": "whoosh_air",
+   "gain": -14
+  },
+  {
+   "word": "prison",
+   "after": 8.34,
+   "kind": "impact:metal",
+   "gain": -6
+  },
+  {
+   "word": "hero",
+   "after": 14.58,
+   "kind": "pop",
+   "gain": -12
+  },
+  {
+   "word": "villain",
+   "after": 14.58,
+   "kind": "stamp",
+   "gain": -8
+  },
+  {
+   "word": "broken",
+   "after": 23.852,
+   "kind": "impact:thud",
+   "gain": -8
+  },
+  {
+   "word": "broke",
+   "after": 27.564,
+   "kind": "rip_down",
+   "gain": -12
+  },
+  {
+   "word": "avatar",
+   "after": 33.62,
+   "kind": "impact:punch",
+   "gain": -7
+  },
+  {
+   "word": "warning",
+   "after": 37.773,
+   "kind": "hud_beep",
+   "gain": -12
+  },
+  {
+   "word": "225",
+   "after": 44.411,
+   "kind": "whoosh",
+   "gain": -12
+  },
+  {
+   "word": "fire",
+   "after": 55.028,
+   "kind": "stamp",
+   "gain": -10
+  },
+  {
+   "word": "earth",
+   "after": 55.028,
+   "kind": "stamp",
+   "gain": -10
+  },
+  {
+   "word": "water",
+   "after": 55.028,
+   "kind": "stamp",
+   "gain": -10
+  },
+  {
+   "word": "radios",
+   "after": 60.672,
+   "kind": "stamp",
+   "gain": -11
+  },
+  {
+   "word": "cataclysm",
+   "after": 67.599,
+   "kind": "boom",
+   "gain": -6
+  },
+  {
+   "word": "lost",
+   "after": 74.091,
+   "kind": "paper:rustle",
+   "gain": -14
+  },
+  {
+   "word": "havens",
+   "after": 79.06,
+   "kind": "sparkle",
+   "gain": -16
+  },
+  {
+   "word": "elora",
+   "after": 87.252,
+   "kind": "pop_soft",
+   "gain": -12
+  },
+  {
+   "word": "bandits",
+   "after": 95.112,
+   "kind": "pop",
+   "gain": -13
+  },
+  {
+   "word": "disasters",
+   "after": 95.112,
+   "kind": "whoosh_air",
+   "gain": -15
+  },
+  {
+   "word": "spirit",
+   "after": 102.213,
+   "kind": "magic_down",
+   "gain": -15
+  },
+  {
+   "word": "hide",
+   "after": 117.512,
+   "kind": "impact:soft",
+   "gain": -12
+  },
+  {
+   "word": "roku",
+   "after": 129.971,
+   "kind": "chime",
+   "gain": -16
+  },
+  {
+   "word": "korra",
+   "after": 136.456,
+   "kind": "chime",
+   "gain": -16
+  },
+  {
+   "word": "blames",
+   "after": 147.759,
+   "kind": "stamp",
+   "gain": -9
+  },
+  {
+   "word": "holes",
+   "after": 163.252,
+   "kind": "paper:crumple",
+   "gain": -12
+  },
+  {
+   "word": "you",
+   "after": 194.724,
+   "kind": "impact:punch",
+   "gain": -8
+  },
+  {
+   "word": "boogeyman",
+   "after": 198.62,
+   "kind": "boom",
+   "gain": -9
+  },
+  {
+   "word": "imprisoned",
+   "after": 207.252,
+   "kind": "impact:metal",
+   "gain": -7
+  },
+  {
+   "word": "triumphs",
+   "after": 231.404,
+   "kind": "sparkle",
+   "gain": -14
+  },
+  {
+   "word": "secret",
+   "after": 242.82,
+   "kind": "whoosh_air",
+   "gain": -16
+  },
+  {
+   "word": "drafted",
+   "after": 277.107,
+   "kind": "stamp",
+   "gain": -9
+  },
+  {
+   "word": "karthik",
+   "after": 300.973,
+   "kind": "impact:punch",
+   "gain": -8
+  },
+  {
+   "word": "identical",
+   "after": 315.793,
+   "kind": "chime",
+   "gain": -15
+  },
+  {
+   "word": "finds",
+   "after": 320.144,
+   "kind": "hud_alert",
+   "gain": -12
+  },
+  {
+   "word": "two",
+   "after": 364.601,
+   "kind": "magic",
+   "gain": -12
+  },
+  {
+   "word": "split",
+   "after": 390.724,
+   "kind": "tape_rip",
+   "gain": -10
+  },
+  {
+   "word": "gone",
+   "after": 412.38,
+   "kind": "stamp",
+   "gain": -12
+  },
+  {
+   "word": "hoverboard",
+   "after": 437.3,
+   "kind": "whoosh",
+   "gain": -13
+  },
+  {
+   "word": "portal",
+   "after": 467.04,
+   "kind": "magic",
+   "gain": -11
+  },
+  {
+   "word": "illegal",
+   "after": 510.3,
+   "kind": "stamp",
+   "gain": -9
+  },
+  {
+   "word": "lightning",
+   "after": 525.403,
+   "kind": "impact:glitch",
+   "gain": -5
+  },
+  {
+   "word": "tore",
+   "after": 544.173,
+   "kind": "tape_rip",
+   "gain": -7
+  },
+  {
+   "word": "broken",
+   "after": 589.714,
+   "kind": "click",
+   "gain": -12
+  },
+  {
+   "word": "blamed",
+   "after": 589.714,
+   "kind": "click",
+   "gain": -12
+  },
+  {
+   "word": "imprisoned",
+   "after": 589.714,
+   "kind": "click",
+   "gain": -12
+  },
+  {
+   "word": "army",
+   "after": 589.714,
+   "kind": "click",
+   "gain": -12
+  },
+  {
+   "word": "place",
+   "after": 589.714,
+   "kind": "click",
+   "gain": -12
+  },
+  {
+   "word": "teachers",
+   "after": 589.714,
+   "kind": "click",
+   "gain": -12
+  },
+  {
+   "word": "walls",
+   "after": 589.714,
+   "kind": "click",
+   "gain": -12
+  },
+  {
+   "word": "falling",
+   "after": 589.714,
+   "kind": "click",
+   "gain": -12
+  },
+  {
+   "word": "died",
+   "after": 630.29,
+   "kind": "impact:soft",
+   "gain": -10
+  }
+ ]
+}
