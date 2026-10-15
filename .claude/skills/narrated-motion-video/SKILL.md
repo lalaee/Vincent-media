@@ -12,6 +12,8 @@ Nothing here is specific to one style or story: the style prompt sets the look, 
 
 Scripts are in `scripts/`, templates in `templates/`. `$K` below means this skill's directory.
 
+> For episodes of a recurring explainer **series** (shared look, cast, section cards and music across videos), use the **explainer-series** skill, which builds on this one.
+
 ## 0. Setup (once per session, about 3 min)
 
 ```bash

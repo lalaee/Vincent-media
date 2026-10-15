@@ -1,0 +1,135 @@
+{
+ "name": "Avatar explainers (flat vector + line boil)",
+ "palette": {
+  "paper": "#F4EAD5",
+  "ink": "#1D1A17",
+  "light": "#FFF8EA",
+  "grey": "#8C8577",
+  "red": "#C7362B",
+  "accent": "#2F7FC1",
+  "accent2": "#3FC1B0",
+  "highlight": "#F2A33A",
+  "glow": "#3FC1B0",
+  "night": "#1E2A44",
+  "sand": "#E3C48A",
+  "ok": "#4F8A3C",
+  "skin": "#B97A4E",
+  "air": "#F2A33A",
+  "water": "#2F7FC1",
+  "earth": "#4F8A3C",
+  "fire": "#D8432E",
+  "spirit": "#3FC1B0",
+  "spirit2": "#7B5CD6",
+  "skinP": "#B97A4E",
+  "skinA": "#F1C9A5",
+  "skinK": "#A86B40"
+ },
+ "fonts": [
+  {
+   "family": "Brush",
+   "file": "fonts/CaveatBrush.ttf",
+   "weight": "400"
+  },
+  {
+   "family": "Fredoka",
+   "file": "fonts/Fredoka.ttf",
+   "weight": "300 700"
+  }
+ ],
+ "type": {
+  "hand": "Brush",
+  "label": "Fredoka"
+ },
+ "paper": "/assets/textures/paper/Paper001_4K_color.jpg",
+ "paperAlpha": 0.12,
+ "boilEvery": 2.5,
+ "personScale": 1.35,
+ "wipe": [
+  "#F2A33A",
+  "#2F7FC1",
+  "#4F8A3C",
+  "#D8432E"
+ ],
+ "section": {
+  "label": "REASON",
+  "bg": "#1D1A17",
+  "colors": [
+   "#F2A33A",
+   "#2F7FC1",
+   "#4F8A3C",
+   "#D8432E",
+   "#3FC1B0",
+   "#7B5CD6",
+   "#C7362B"
+  ]
+ },
+ "characters": {
+  "pavi": {
+   "skin": "#B97A4E",
+   "top": "#2F7FC1",
+   "hair": "bun"
+  },
+  "nisha": {
+   "skin": "#B97A4E",
+   "top": "#D8432E",
+   "hair": "bun"
+  },
+  "aang": {
+   "skin": "#F1C9A5",
+   "top": "#F2A33A",
+   "hair": "bald",
+   "mark": "#2F7FC1"
+  },
+  "korra": {
+   "skin": "#A86B40",
+   "top": "#2F7FC1",
+   "hair": "tail"
+  },
+  "roku": {
+   "skin": "#F1C9A5",
+   "top": "#D8432E",
+   "hair": "white"
+  },
+  "azula": {
+   "skin": "#F1C9A5",
+   "top": "#D8432E",
+   "hair": "bun",
+   "face": "angry"
+  },
+  "karthik": {
+   "skin": "#B97A4E",
+   "top": "#3A3F4A",
+   "hair": "helmet",
+   "face": "angry"
+  },
+  "kid": {
+   "skin": "#B97A4E",
+   "top": "#4F8A3C",
+   "hair": "bun"
+  },
+  "kid2": {
+   "skin": "#B97A4E",
+   "top": "#2F7FC1",
+   "hair": "bob"
+  }
+ },
+ "music": {
+  "recipe": "guofeng",
+  "level": -23,
+  "args": {
+   "bpm": 84,
+   "key": "D",
+   "mode": "yu",
+   "flavor": "classical"
+  },
+  "wipe": "swish",
+  "card": [
+   "impact:soft",
+   "chime"
+  ]
+ },
+ "render": {
+  "fps": 30,
+  "secondsPerFrame": 0.45
+ }
+}
