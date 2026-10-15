@@ -112,6 +112,7 @@ Then check sync stills on a handful of hit words, rebuild the bed on the new cha
 2. **Storyboard:** about 30 frames across the whole episode. Look at your own sheet first: overlaps, tiny figures, text on heads, missing glyphs (Fredoka has no arrows, so write `>`).
 3. **Pilot:** the first section rendered with the full mix; the user checks pacing, music level and characters.
 4. **Full render.** Report specs, hits checked, and 2–4 honest weaknesses.
+5. **Notes after delivery:** fix only the named seconds with `$N/scripts/patch.sh` (narrated-motion-video section 11), never a full re-render.
 
 ## Practical numbers
 

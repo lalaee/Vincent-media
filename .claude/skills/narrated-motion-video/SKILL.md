@@ -96,7 +96,7 @@ Make a separate `vertical.html` (1080×1920) with the same helpers, cues and aud
 ## 9. Render, monitor, verify
 
 - **Long videos: render a pilot first.** `--from 0 --to <s> --out demos/<slug>/out/pilot_video.mp4` renders one section; mux its audio slice with `ffmpeg -i pilot_video.mp4 -i out/audio.wav -map 0:v -map 1:a -c:v copy -c:a aac -t <s>`. Get approval on pacing and sound before the multi-hour full render. Flat/line styles render at ~0.5 s/frame, so about 2 h for 9 minutes at 30 fps.
-- Launch the render with Bash `run_in_background` and a long timeout; you'll be notified when it finishes. `$K/scripts/progress.sh` shows frames done, since the r.sh log is buffered until the end.
+- Launch the render with Bash `run_in_background` and a long timeout; you'll be notified when it finishes. Background jobs are capped at **2 h**: for longer renders, split with `--from/--to` into ≤ 1.5 h parts and join them (frames already written to `/tmp/render-*/seg00.mkv` survive a kill, so a killed render can be finished from its last frame and joined with `trim=end_frame=N` + `concat`). `$K/scripts/progress.sh` shows frames done, since the r.sh log is buffered until the end.
 - `$K/scripts/check.sh video.mp4 sync.jpg <hit-word times...>` checks specs, loudness, held-frame stepping, and frames either side of each hit. **Look at the sync sheet.**
 
 ## 10. Deliver
@@ -105,6 +105,14 @@ Make a separate `vertical.html` (1080×1920) with the same helpers, cues and aud
 - Put full-quality masters in the user's project under `exports/`. Don't commit large media or third-party art: add `exports/` to `.git/info/exclude`, which keeps the tree clean without pushing anything.
 - Captions: `make_srt.py transcript.json out.srt <duration>`.
 - For YouTube: title options, a description crediting each artwork source (from `meta.json`), upload settings, and the rights caveat if franchise art was used.
+
+## 11. Fixing a few frames after delivery
+
+The user sends `mm:ss` + what's wrong (ask them to batch every note into one message). Per note: find the scene, make the smallest fix (timing → one start/word in the plan + rebuild cues; text/colour → one line; drawing → that scene only), render one still at that time with `--stills <t>` and compare it to the original frame. Then patch every range in one call:
+```bash
+$K/scripts/patch.sh work/mg demos/<slug> demos/<slug>/out/video.mp4 3:40-3:52 7:05-7:09   # PAD=0.5 for a margin
+```
+It re-renders only those frames (lossless), splices them in by exact frame number, copies the audio untouched, checks the frame count, and keeps the old master as `video.prev.mp4`. Cost: ~0.45 s/frame for the patch plus one full re-encode (~15 min for 10 min of video). Then re-run `share_copy.sh` and re-copy the master to `exports/`. Fix in the same session if possible: the episode's working files live in the ephemeral container.
 
 ## No narration (a 10 s style film from a prompt)
 
