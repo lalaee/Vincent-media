@@ -97,6 +97,7 @@ Make a separate `vertical.html` (1080×1920) with the same helpers, cues and aud
 
 - **Long videos: render a pilot first.** `--from 0 --to <s> --out demos/<slug>/out/pilot_video.mp4` renders one section; mux its audio slice with `ffmpeg -i pilot_video.mp4 -i out/audio.wav -map 0:v -map 1:a -c:v copy -c:a aac -t <s>`. Get approval on pacing and sound before the multi-hour full render. Flat/line styles render at ~0.5 s/frame, so about 2 h for 9 minutes at 30 fps.
 - Launch the render with Bash `run_in_background` and a long timeout; you'll be notified when it finishes. Background jobs are capped at **2 h**: for longer renders, split with `--from/--to` into ≤ 1.5 h parts and join them (frames already written to `/tmp/render-*/seg00.mkv` survive a kill, so a killed render can be finished from its last frame and joined with `trim=end_frame=N` + `concat`). `$K/scripts/progress.sh` shows frames done, since the r.sh log is buffered until the end.
+- **Review every render (pilot, full, patch) before sending:** `<venv python> $K/scripts/review.py out/video.mp4 transcript.json out/review [--cues cues.json --scenes scenes.js --font fonts/<label>.ttf]` (~2 min). Level 1 prints empty-screen stretches, long static stretches, cue words never spoken in their scene, and on-screen name-like words never spoken (spelling check). Level 2 writes ~5 contact sheets (2 frames per scene, each stamped with the words being spoken): **look at every sheet** and check picture vs voice, overlaps, text on faces, spelling. Fix, patch, and re-run on the patched video. ~10k tokens for a 10-minute video; never review frame by frame.
 - `$K/scripts/check.sh video.mp4 sync.jpg <hit-word times...>` checks specs, loudness, held-frame stepping, and frames either side of each hit. **Look at the sync sheet.**
 
 ## 10. Deliver
@@ -112,7 +113,7 @@ The user sends `mm:ss` + what's wrong (ask them to batch every note into one mes
 ```bash
 $K/scripts/patch.sh work/mg demos/<slug> demos/<slug>/out/video.mp4 3:40-3:52 7:05-7:09   # PAD=0.5 for a margin
 ```
-It re-renders only those frames (lossless), splices them in by exact frame number, copies the audio untouched, checks the frame count, and keeps the old master as `video.prev.mp4`. Cost: ~0.45 s/frame for the patch plus one full re-encode (~15 min for 10 min of video). Then re-run `share_copy.sh` and re-copy the master to `exports/`. Fix in the same session if possible: the episode's working files live in the ephemeral container.
+**Patch from the scene's start** when a fix changes when something first appears (e.g. a cue word that never fired showed its beat from the scene start or never; once fixed it appears later, so every earlier frame of that scene changes too). It re-renders only those frames (lossless), splices them in by exact frame number, copies the audio untouched, checks the frame count, and keeps the old master as `video.prev.mp4`. Cost: ~0.45 s/frame for the patch plus one full re-encode (~15 min for 10 min of video). Then re-run `review.py` on the patched video, then `share_copy.sh` and re-copy the master to `exports/`. Fix in the same session if possible: the episode's working files live in the ephemeral container.
 
 ## No narration (a 10 s style film from a prompt)
 
