@@ -86,7 +86,9 @@ export function roster(E, { leftTitle, rightTitle, items, goneWord, caption }) {
 export function posterPair(E, { left, right, bg }) {
   return () => { const { P } = E; E.ground(bg || '#C9A86A'); E.card(600, 540, 560, 760, P.light, 5200, -3); E.card(1320, 540, 560, 760, P.light, 5210, 3);
     E.hand(left.title, 600, 250, 110, left.color || '#4F8A3C'); E.person(600, 780, 0.9, { ...ch(E, left.who), id: 5220 }); E.label(left.note, 600, 860, 30, P.ink);
-    if (E.on(E.wt(right.word))) { E.hand(right.title, 1320, 250, 110, right.color || P.red); E.person(1320, 780, 0.9, { ...ch(E, right.who), id: 5260 }); E.label(right.note, 1320, 860, 30, P.ink); }
+    const tTitle = right.titleAt != null ? E.S0 + right.titleAt : E.wt(right.word);   // titleAt: show the title early, the rest on right.word
+    if (E.on(tTitle)) E.scaled(1320, 250, E.pop(tTitle), () => E.hand(right.title, 1320, 250, 110, right.color || P.red));
+    if (E.on(E.wt(right.word))) { E.scaled(1320, 780, E.pop(E.wt(right.word)), () => E.person(1320, 780, 0.9, { ...ch(E, right.who), id: 5260 })); E.label(right.note, 1320, 860, 30, P.ink); }
   };
 }
 // lines: [[word, text], ...] each ticks on its word

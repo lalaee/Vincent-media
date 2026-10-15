@@ -131,7 +131,7 @@ export default (E) => {
     label('PAVI', 640, 990, 52, P.ink, { weight: 700 }); if (on(wt('nisha'))) label('NISHA', 1280, 990, 52, P.ink, { weight: 700 });
     if (on(wt('identical'))) hand('IDENTICAL TWINS', 960, 160, 100, P.ink);
     if (on(wt('finds'))) { person(1760, 900, 0.9, { top: '#3A3F4A', hair: 'helmet', face: 'angry', arms: 'point', flip: -1, id: 3900 }); hand('"THE AVATAR!"', 1500, 330, 80, P.red); ink([[1640, 650], [1420, 560]], 3950, { w: 10, color: P.red }); }
-    if (on(wt('sister'))) hand('your sister', 1280, 300, 70, P.red);
+    if (on(wt('sister'))) { hand('your sister', 960, 470, 70, P.red); ink([[1080, 500], [1180, 560]], 3960, { w: 8, color: P.red, len: prog(wt('sister'), 0.3) }); }
     },
     split() {
     ground(P.night); const sp = on(wt('two', E.S0 + 10)) ? prog(wt('two', E.S0 + 10), 0.8) : 0;
@@ -149,7 +149,7 @@ export default (E) => {
     portal() {
     ground(P.night); for (let i = 0; i < 9; i++) shape(rectP(120 + i * 200, 1080 - 200 - (i * 97 % 300), 150, 220 + (i * 97 % 300)), 5000 + i, '#2E3B55', { smooth: false });
     const g = x.createLinearGradient(960, 0, 960, 1080); g.addColorStop(0, 'rgba(63,193,176,0.1)'); g.addColorStop(1, 'rgba(63,193,176,0.9)'); x.fillStyle = g; x.fillRect(900, 0, 120, 1000);
-    shape(circ(960, 960, 220, 60), 5050, P.spirit, { line: 5 }); for (let i = 0; i < 5; i++) { const u = ((E.T - E.S0) * 0.25 + i / 5) % 1; wisp(960 + Math.sin(i * 2 + E.T) * 200 * u, 900 - u * 800, 40, 5060 + i * 10, i % 2 ? P.spirit : P.spirit2); }
+    shape(circ(960, 960, 220, 60), 5050, P.spirit, { line: 5 }); for (let i = 0; i < 5; i++) { const u = ((E.T - E.S0) * 0.25 + i / 5) % 1; wisp(960 + Math.sin(i * 2 + E.T) * 200 * u, 900 - u * 520, 40, 5060 + i * 10, i % 2 ? P.spirit : P.spirit2); }
     if (on(wt('portal'))) hand('REPUBLIC CITY SPIRIT PORTAL', 960, 120, 70, P.light);
     if (on(wt('hope'))) hand('an act of hope', 960, 280, 80, P.air);
     },
@@ -165,10 +165,34 @@ export default (E) => {
     if (on(wt('forever'))) hand('the cycle ends forever', 960, 140, 80, P.red);
     },
     vaatu() {
+    const tL = wt('lotus'), tR = wt('ripped', tL), tT = wt('two', tR), tU = wt('uncertain', tT);
+    if (!on(tL - 0.3)) {
     ground('#14101E'); x.save(); x.shadowColor = P.spirit; x.shadowBlur = 40; shape(circ(800, 520, 150, 190), 5600, '#E8FFF9'); x.restore(); label('RAAVA', 800, 780, 48, P.light, { weight: 700 });
     shape([[1500, 300], [1340, 420], [1300, 640], [1420, 820], [1640, 760], [1700, 520]], 5650, '#2A0E2E'); x.fillStyle = P.red; x.beginPath(); x.arc(1450, 500, 18, 0, TAU); x.arc(1560, 500, 18, 0, TAU); x.fill(); label('VAATU', 1500, 900, 48, P.light, { weight: 700 });
     if (on(wt('tore'))) for (let i = 0; i < 6; i++) ink([[950, 400 + i * 40], [1300, 420 + i * 45]], 5700 + i, { w: 8, color: P.spirit2, len: prog(wt('tore'), 0.4) });
     if (on(wt('gone'))) { ['AANG', 'ROKU', 'KYOSHI'].forEach((n, i) => { card(500 + i * 460, 160, 300, 90, P.light, 5800 + i); label(n, 500 + i * 460, 162, 44, P.ink, { weight: 700 }); ink([[380 + i * 460, 160], [620 + i * 460, 160]], 5810 + i, { w: 8, color: P.red }); }); }
+      if (on(wt('reborn'))) hand('reborn', 800, 300, 70, P.spirit);
+      return; }
+    if (!on(tR - 0.3)) {                                   // the Red Lotus attacks Korra in the Avatar State
+      ground('#1E1420'); label('THE RED LOTUS', 960, 120, 56, P.red, { weight: 700 });
+      x.save(); x.shadowColor = P.spirit; x.shadowBlur = 50; person(960, 900, 1.25, { char: 'korra', face: 'glow', arms: 'up', id: 5900 }); x.restore();
+      [[380, 1], [640, 1], [1300, -1], [1560, -1]].forEach(([px, f], i) => scaled(px, 900, pop(tL + 0.15 * i), () => person(px, 900, 0.85, { top: P.red, hair: 'bald', mask: true, face: 'angry', arms: 'point', flip: f, id: 5950 + i * 30 })));
+      if (on(wt('killing', tL))) hand('tried to end the cycle', 960, 250, 80, P.light);
+      if (on(wt('state', tL))) label('AVATAR STATE', 960, 990, 40, P.spirit, { weight: 700 });
+      return; }
+    if (!on(tT - 0.3)) {                                   // ripped out, rebuilt, nearly destroyed
+      ground('#14101E'); const steps = [['ripped', 'ripped out'], ['rebuilt', 'rebuilt'], ['destroyed', 'nearly destroyed']];
+      steps.forEach(([w, txt], i) => { const t0 = wt(w, tR - 0.1); if (!on(t0)) return; const cx = 400 + i * 560;
+        scaled(cx, 480, pop(t0), () => { x.save(); x.shadowColor = P.spirit; x.shadowBlur = 40; shape(circ(cx, 480, 110 - i * 15, 140 - i * 20), 6050 + i * 5, i === 2 ? '#9FBFB8' : '#E8FFF9'); x.restore();
+          if (i === 0) for (let k = 0; k < 4; k++) ink([[cx + 120, 440 + k * 30], [cx + 230, 450 + k * 34]], 6070 + k, { w: 7, color: P.spirit2 });
+          if (i === 2) { ink([[cx - 20, 360], [cx + 15, 450], [cx - 25, 520], [cx + 10, 600]], 6080, { w: 7, color: P.ink }); } });
+        hand(txt, cx, 760, 76, i === 2 ? P.red : P.light); });
+      if (on(wt('inheriting', tR - 6))) label('YOUR SPIRIT', 960, 140, 50, P.spirit, { weight: 700 });
+      return; }
+    ground(P.night);                                       // now there may be two of you
+    [['pavi', 760, 1], ['nisha', 1160, -1]].forEach(([c, px, f], i) => scaled(px, 880, pop(tT + 0.25 * i), () => { x.save(); x.shadowColor = P.spirit; x.shadowBlur = 40; person(px, 880, 1.1, { char: c, face: 'glow', flip: f, id: 6100 + i * 40 }); x.restore(); }));
+    scaled(960, 300, pop(tT + 0.4), () => hand('two of you?', 960, 300, 110, P.highlight || P.light));
+    if (on(tU)) hand('the most uncertain Avatar ever', 960, 1010, 70, P.red);
     },
     title: PT.titleCard(E, { kicker: 'Why it sucks to be', title: 'THE AVATAR', sub: 'IN SEVEN HAVENS', subWord: 'seven', titleWord: 'avatar', icons: ORBIT, drawIcon: element }),
     warning: PT.warning(E, { text: 'SPOILERS: EPISODES 1-3 ONLY', word: 'premise' }),
@@ -181,8 +205,8 @@ export default (E) => {
     doors: PT.twoDoors(E, { a: { text: 'STAY HIDDEN', color: P.water, word: 'stay' }, b: { text: 'REVEAL YOURSELF', color: P.fire, word: 'reveal' } }),
     teachers: PT.roster(E, { leftTitle: "AANG'S TEACHERS", rightTitle: 'YOUR TEACHERS', goneWord: 'gone', caption: { word: 'criminal', text: 'teaching you = helping a criminal' },
       items: [{ name: 'KATARA', word: 'katara', draw: glyph('water') }, { name: 'TOPH', word: 'toph', draw: glyph('earth') }, { name: 'ZUKO', word: 'zuko', draw: glyph('fire') }, { name: 'MONKS', word: 'monks', draw: glyph('air') }] }),
-    posters: PT.posterPair(E, { left: { title: 'NEEDED', note: 'to keep peace with the spirits', who: { char: 'pavi', arms: 'up' } }, right: { title: 'WANTED', note: 'bending 2+ elements', word: 'illegal', who: { char: 'pavi', face: 'scared' } } }),
-    recap: PT.checklist(E, { lines: [['broken', 'a broken world'], ['blamed', 'your last life is blamed'], ['imprisoned', '2 elements = prison'], ['army', 'friends drafted to hunt you'], ['place', 'your twin hunted in your place'], ['teachers', 'no teachers'], ['walls', 'spirits at the walls'], ['falling', 'the cycle may be falling apart']] }),
+    posters: PT.posterPair(E, { left: { title: 'NEEDED', note: 'to keep peace with the spirits', who: { char: 'pavi', arms: 'up' } }, right: { title: 'WANTED', note: 'bending 2+ elements', word: 'illegal', titleAt: 0.6, who: { char: 'pavi', face: 'scared' } } }),
+    recap: ((f) => () => { f(); if (!on(wt('broken', E.S0))) scaled(960, 560, pop(E.S0 + 0.3), () => { hand('7 reasons it sucks', 960, 520, 150, P.red); }); })(PT.checklist(E, { lines: [['broken', 'a broken world'], ['blamed', 'your last life is blamed'], ['imprisoned', '2 elements = prison'], ['army', 'friends drafted to hunt you'], ['place', 'your twin hunted in your place'], ['teachers', 'no teachers'], ['walls', 'spirits at the walls'], ['falling', 'the cycle may be falling apart']] })),
     next: PT.nextTease(E, { cast: ['korra', 'aang', 'roku', 'kid', 'kid2', 'pavi'], fadeWord: 'died', buttonWord: 'next', lines: [['harder', 'never a harder time'], ['died', 'how every Avatar died', P.red]] }),
     sec1: E.sectionCard(1), sec2: E.sectionCard(2), sec3: E.sectionCard(3), sec4: E.sectionCard(4), sec5: E.sectionCard(5), sec6: E.sectionCard(6), sec7: E.sectionCard(7),
   };
