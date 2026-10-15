@@ -68,10 +68,11 @@ export async function createEngine(canvas, series, cues) {
 
   // ---------- vocabulary
   // Flat geometric person. Defaults come from series.characters[o.char]; any option can be overridden per call.
-  // hair: bun|bob|bald|tail|white|helmet; arms: down|up|point|cross|wave; face: calm|scared|angry|glow; mark: forehead stripe colour
+  // hair: bun|bob|bald|tail|white|helmet; arms: down|up|point|cross|wave; face: calm|scared|angry|glow; mark: forehead stripe colour;
+  // mask: domino-mask colour (eyes become white slits); hairC: hair colour
   E.person = function person(cx, cy, s, o = {}) {
     const base = (o.char && series.characters?.[o.char]) || {};
-    const { skin = P.skin || '#B97A4E', top = P.accent || '#2F7FC1', hair = 'bun', hairC = P.ink, arms = 'down', id = 1, face = 'calm', mark = null, flip = 1 } = { ...base, ...o };
+    const { skin = P.skin || '#B97A4E', top = P.accent || '#2F7FC1', hair = 'bun', hairC = P.ink, arms = 'down', id = 1, face = 'calm', mark = null, mask = null, flip = 1 } = { ...base, ...o };
     s *= series.personScale || 1.35; x.save(); x.translate(cx, cy); x.scale(s * flip, s);
     const armP = { down: [[-40, -150], [-62, -60]], up: [[-40, -150], [-80, -280]], point: [[40, -150], [150, -180]], cross: [[-40, -150], [20, -120]], wave: [[40, -150], [90, -250]] }[arms];
     const arm2 = arms === 'up' ? [[40, -150], [80, -280]] : arms === 'cross' ? [[40, -150], [-20, -110]] : [[40, -150], [62, -60]];
@@ -84,6 +85,8 @@ export async function createEngine(canvas, series, cues) {
     if (hair === 'white') { E.shape([[-52, -222], [-48, -262], [0, -276], [48, -262], [52, -222], [30, -248], [-30, -248]], id + 5, '#EDEDED', { line: 3 }); E.shape([[-30, -195], [30, -195], [18, -140], [0, -128], [-18, -140]], id + 6, '#EDEDED', { line: 3 }); }
     if (hair === 'helmet') E.shape([[-58, -205], [-54, -262], [0, -285], [54, -262], [58, -205], [70, -200], [-70, -200]], id + 5, '#3A3F4A', { line: 4 });
     if (mark) E.ink([[0, -192], [0, -270]], id + 7, { w: 12, color: mark });
+    if (mask) { E.shape([[-50, -236], [-20, -246], [0, -232], [20, -246], [50, -236], [44, -206], [16, -204], [0, -214], [-16, -204], [-44, -206]], id + 11, mask, { line: 3 });
+      x.fillStyle = '#FFFFFF'; x.beginPath(); x.ellipse(-22, -220, 11, 6, 0.2, 0, TAU); x.ellipse(22, -220, 11, 6, -0.2, 0, TAU); x.fill(); E.ink([[-12, -192], [0, -188], [12, -192]], id + 8, { w: 3 }); x.restore(); return; }
     x.fillStyle = P.ink;
     if (face === 'calm') { x.beginPath(); x.arc(-18, -215, 5, 0, TAU); x.arc(18, -215, 5, 0, TAU); x.fill(); E.ink([[-12, -192], [0, -188], [12, -192]], id + 8, { w: 3 }); }
     if (face === 'scared') { x.beginPath(); x.arc(-18, -218, 7, 0, TAU); x.arc(18, -218, 7, 0, TAU); x.fill(); E.shape(E.circ(0, -188, 8, 10), id + 8, P.ink, { line: 0 }); }

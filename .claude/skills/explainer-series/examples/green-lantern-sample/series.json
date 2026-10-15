@@ -1,0 +1,124 @@
+{
+ "name": "Green Lantern explainers (flat vector + line boil)",
+ "palette": {
+  "paper": "#E9F0E4",
+  "ink": "#0E1512",
+  "light": "#F4FFF6",
+  "grey": "#7E8C84",
+  "red": "#D63A2F",
+  "accent": "#2BD158",
+  "accent2": "#2BD158",
+  "highlight": "#5CFF8A",
+  "glow": "#5CFF8A",
+  "night": "#0B1424",
+  "sand": "#1B2A3E",
+  "skin": "#E8B98F",
+  "ok": "#2BD158",
+  "lantern": "#2BD158",
+  "lanternDark": "#127A33",
+  "fear": "#F5C518",
+  "rage": "#D63A2F",
+  "love": "#B04FE0",
+  "suit": "#101914"
+ },
+ "fonts": [
+  {
+   "family": "Brush",
+   "file": "fonts/CaveatBrush.ttf",
+   "weight": "400"
+  },
+  {
+   "family": "Fredoka",
+   "file": "fonts/Fredoka.ttf",
+   "weight": "300 700"
+  }
+ ],
+ "type": {
+  "hand": "Brush",
+  "label": "Fredoka"
+ },
+ "paper": "/assets/textures/paper/Paper001_4K_color.jpg",
+ "paperAlpha": 0.1,
+ "boilEvery": 2.5,
+ "personScale": 1.35,
+ "wipe": [
+  "#2BD158",
+  "#0B1424",
+  "#127A33",
+  "#5CFF8A"
+ ],
+ "section": {
+  "label": "RULE",
+  "bg": "#0B1424",
+  "colors": [
+   "#2BD158",
+   "#5CFF8A",
+   "#F5C518",
+   "#D63A2F",
+   "#B04FE0"
+  ]
+ },
+ "characters": {
+  "hal": {
+   "skin": "#E8B98F",
+   "top": "#2BD158",
+   "hair": "bob",
+   "hairC": "#5A3A22",
+   "mask": "#127A33"
+  },
+  "john": {
+   "skin": "#6B4329",
+   "top": "#2BD158",
+   "hair": "bald"
+  },
+  "guy": {
+   "skin": "#F0C49C",
+   "top": "#127A33",
+   "hair": "bob",
+   "hairC": "#C1502E"
+  },
+  "kyle": {
+   "skin": "#E8B98F",
+   "top": "#2BD158",
+   "hair": "bob",
+   "hairC": "#1A1A1A",
+   "mask": "#0E1512"
+  },
+  "jessica": {
+   "skin": "#B98058",
+   "top": "#2BD158",
+   "hair": "tail",
+   "hairC": "#1A1A1A",
+   "mask": "#127A33"
+  },
+  "sinestro": {
+   "skin": "#D9668E",
+   "top": "#F5C518",
+   "hair": "bob",
+   "hairC": "#111111",
+   "face": "angry"
+  },
+  "guardian": {
+   "skin": "#5FA4D8",
+   "top": "#C7362B",
+   "hair": "white"
+  }
+ },
+ "music": {
+  "recipe": "darksynth",
+  "level": -23,
+  "args": {
+   "bpm": 100,
+   "key": "E"
+  },
+  "wipe": "swish",
+  "card": [
+   "impact:soft",
+   "chime"
+  ]
+ },
+ "render": {
+  "fps": 30,
+  "secondsPerFrame": 0.45
+ }
+}

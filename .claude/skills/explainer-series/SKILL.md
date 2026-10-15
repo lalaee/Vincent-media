@@ -11,6 +11,7 @@ are shared, so an episode is mostly *deciding* what to show and when, not re-bui
 
 `$N` = the narrated-motion-video skill dir (setup, transcription, mixing, checks, storyboard, delivery scripts).
 `$K` = this skill's dir. `examples/avatar-seven-havens/` is a complete worked episode: bible, name fixes, plan and 42 scenes.
+`examples/green-lantern-sample/` shows starting a *new* series: a bible (masked heroes, a glowing-construct look, darksynth) and 5 sample scenes (cast line-up, a construct drawing itself, an oath card, a section card, versus). Render a sample like this for the user before episode 1 of any new series.
 
 ## The format (what made video 1 work)
 
@@ -25,7 +26,7 @@ are shared, so an episode is mostly *deciding* what to show and when, not re-bui
 1. Copy `$K/templates/series.json` to `series/<name>/series.json` in the user's repo, and agree on:
    - **palette:** the keys `paper ink light grey red accent accent2 highlight glow night sand skin ok`, plus any subject colours (e.g. the four elements);
    - **section label** ("REASON", "RULE", "MYTH", "PART") and the card colours;
-   - **characters:** `{name: {skin, top, hair: bun|bob|bald|tail|white|helmet, mark, face}}`;
+   - **characters:** `{name: {skin, top, hair: bun|bob|bald|tail|white|helmet, hairC, mark, mask, face}}`. One signature trait each; `mask` gives a domino mask. Keep suit colours distinct from the backgrounds they will stand on (green on green vanishes).
    - **music:** `recipe` + `args` (`guofeng` for East-Asian worlds, `darksynth`/`synthwave` for sci-fi, `lofi` for essays, `ambient`, `explainer`, ...);
    - **fonts:** OFL files from `https://cdn.jsdelivr.net/gh/google/fonts@main/ofl/<family>/<File>.ttf` into `series/<name>/fonts/` (`hand` = brush/marker, `label` = rounded sans).
 2. Start `series/<name>/fixes.json` for names Whisper mishears (`{"Cora": "Korra"}`). Grow it every episode.
