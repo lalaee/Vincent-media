@@ -1,0 +1,17 @@
+{
+  "channel": "Ladeeda Worlds",
+  "tagline": "Where you get dropped into places you'd never survive.",
+  "promise": "Every video puts you inside a different world and asks one question: how badly would this go for you?",
+  "voice": "Second person ('you'), about ten minutes, original art, one new video every week.",
+  "worlds": "Haunted mazes, ruined planets, fictional empires, real history at its worst; full stories of games, shows and strange corners of the universe.",
+  "formats": [
+    {"series": "Why It Sucks To Be…", "title": "Why It Sucks To Be {who} in {world}", "playlist": "Why It Sucks To Be…", "section_label": "REASON"},
+    {"series": "How You Would Die In…", "title": "How You Would Die In {world}", "playlist": "How You Would Die In…", "section_label": "WAY"},
+    {"series": "Full stories", "title": "The Full Story of {subject}", "playlist": "Full Stories"}
+  ],
+  "footer": "Welcome to Ladeeda Worlds, where you get dropped into places you'd never survive. Every video puts you inside a different world and asks one question: how badly would this go for you?\n\nNew videos every week. Subscribe, and try not to get lost.",
+  "hashtags_always": ["#LadeedaWorlds"],
+  "tags_always": ["ladeeda worlds"],
+  "pinned_comment_style": "A second-person dilemma from the episode, ending with 👇 (e.g. 'Would you hide, or reveal yourself and save your twin? 👇')",
+  "description_opener_style": "Two or three punchy second-person lines that drop the viewer into the world ('You're the Avatar. The most powerful person alive. And in Seven Havens, that's the worst thing you could be.')"
+}

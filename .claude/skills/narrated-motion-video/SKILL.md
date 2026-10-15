@@ -105,7 +105,7 @@ Make a separate `vertical.html` (1080×1920) with the same helpers, cues and aud
 - Chat file limit is 30 MB: send `share_copy.sh` previews and say they are previews.
 - Put full-quality masters in the user's project under `exports/`. Don't commit large media or third-party art: add `exports/` to `.git/info/exclude`, which keeps the tree clean without pushing anything.
 - Captions: `make_srt.py transcript.json out.srt <duration>`.
-- For YouTube: title options, a description crediting each artwork source (from `meta.json`), upload settings, and the rights caveat if franchise art was used.
+- For YouTube (for a Ladeeda Worlds video, use the channel profile and notes template in the explainer-series skill): title options, a description crediting each artwork source (from `meta.json`), upload settings, and the rights caveat if franchise art was used.
 
 ## 11. Fixing a few frames after delivery
 

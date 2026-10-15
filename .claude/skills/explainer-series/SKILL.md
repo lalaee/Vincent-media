@@ -1,6 +1,6 @@
 ---
 name: explainer-series
-description: Produce episodes of a narrated YouTube explainer series (e.g. "Why it sucks to be X", "Every time Y happened", lore and franchise breakdowns, history or science explainers) as hand-made-looking motion graphics in a flat-vector + frame-by-frame line-boil hybrid, with code-drawn characters and no copyrighted art. Keeps a series "bible" (palette, fonts, characters, section cards, music) so every episode looks like the same show, and turns each new voice-over into a storyboard, pilot and full render. Use when the user sends narration for a series episode, wants to start a new series in this format, or asks for "another one like the Avatar video". Builds on the narrated-motion-video skill.
+description: Produce episodes of a narrated YouTube explainer series (e.g. "Why it sucks to be X", "Every time Y happened", lore and franchise breakdowns, history or science explainers) as hand-made-looking motion graphics in a flat-vector + frame-by-frame line-boil hybrid, with code-drawn characters and no copyrighted art. Keeps a series "bible" (palette, fonts, characters, section cards, music) so every episode looks like the same show, and turns each new voice-over into a storyboard, pilot and full render. Use when the user sends narration for a series episode, wants to start a new series in this format, or asks for "another one like the Avatar video" or a Ladeeda Worlds episode (the user's YouTube channel; its profile and upload-notes template live here). Builds on the narrated-motion-video skill.
 ---
 
 # Explainer series
@@ -123,4 +123,10 @@ Then check sync stills on a handful of hit words, rebuild the bed on the new cha
 - Render: ~0.45 s/frame at 1080p30, so a 9-minute episode takes ~2 h. Run pilot and full renders in the background; check `$N/scripts/progress.sh`.
 - Bed: ~1 min per 50 s chapter. One process for a whole 9-minute bed was OOM-killed at ~14 GB; always use chapters.
 - Mix: −14 LUFS; the limiter leaves room for AAC so the video stays under −1 dBTP.
-- Deliver: 16:9 master to `exports/` (git-ignored via `.git/info/exclude`), a share copy under 30 MB, `.srt` captions, and YouTube notes (title options, description, chapters from the section cards' start times, which YouTube shows as chapters).
+- Deliver: 16:9 master to `exports/` (git-ignored via `.git/info/exclude`), a share copy under 30 MB, `.srt` captions, and YouTube notes.
+
+## Channel: Ladeeda Worlds
+
+The user's episodes are released on the YouTube channel **Ladeeda Worlds**; its profile is `channel/ladeeda-worlds.json` (tagline, second-person voice, formats with their title patterns and playlists, description footer, hashtags, pinned-comment style). Every series in this skill is one of its formats ("Why It Sucks To Be…" uses `REASON` cards, "How You Would Die In…" uses `WAY` cards, plus full stories). When writing a new episode or series, keep the voice: second person, ~10 minutes, original code-drawn art, ending on the next episode's tease.
+
+**YouTube notes:** fill `templates/youtube_notes.md` from the channel profile and the episode: titles in the series pattern, a second-person description opener, chapters from the final video's scene starts (0:00 first), the channel footer, hashtags, tags, a pinned-comment dilemma, playlist, end-screen placement and the rights line. Write it to `<slug>-youtube.md` and send it with the video. `examples/avatar-seven-havens/youtube.md` is a finished example.
