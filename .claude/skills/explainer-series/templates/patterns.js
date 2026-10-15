@@ -48,7 +48,10 @@ export function bars(E, { bars: B, title, grow = false, end }) {
 // sites: [[x,y],...] walled places; highlight: {index, word, name}
 export function walledMap(E, { sites, title, titleWord, highlight, bg }) {
   return () => { const { P } = E; E.ground(bg || P.sand || P.paper); const t0 = E.wt(titleWord);
-    sites.forEach(([sx, sy], i) => E.scaled(sx, sy, E.pop(t0 + i * 0.1), () => E.ringWall(sx, sy, 110, 1400 + i * 80, highlight && i === highlight.index && E.on(E.wt(highlight.word)) ? P.highlight : '#EBD6A6')));
+    const tS = Math.min(t0, E.S0 + 0.3), dim = !E.on(t0);           // sites appear dim from the scene start, full on titleWord
+    if (dim) { E.x.save(); E.x.globalAlpha = 0.35; }
+    sites.forEach(([sx, sy], i) => E.scaled(sx, sy, E.pop(tS + i * 0.1), () => E.ringWall(sx, sy, 110, 1400 + i * 80, highlight && i === highlight.index && E.on(E.wt(highlight.word)) ? P.highlight : '#EBD6A6')));
+    if (dim) E.x.restore();
     if (E.on(t0)) E.hand(title, 960, 520, 120, P.ink);
     if (highlight && E.on(E.wt(highlight.word))) { const [hx, hy] = sites[highlight.index]; E.card(hx, hy + 200, 340, 90, P.light, 1990); E.label(highlight.name, hx, hy + 202, 54, P.ink, { weight: 700 }); }
   };
