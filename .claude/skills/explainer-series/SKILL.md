@@ -96,6 +96,16 @@ Draw the rest as **custom scenes** with the engine vocabulary: `person(cx, cy, s
 - Sensitive beats (deaths, violence) use established symbols: fading figures, broken links, a light going out.
 - Long scenes (> 12 s) need several word-keyed beats, or split them.
 
+## Re-voicing an episode (new narrator, new take)
+
+The visuals key off words, so a new recording of the same script only needs its times moved:
+```bash
+transcribe.py new.mp3 transcript_new.json <names...> && fix_names.py transcript_new.json series/<name>/fixes.json
+python3 $K/scripts/retime.py transcript_old.json transcript_new.json plan.json plan_new.json   # aligns word by word
+python3 $K/scripts/build_cues.py transcript_new.json plan_new.json cues.json
+```
+Then check sync stills on a handful of hit words, rebuild the bed on the new chapters, and render a pilot. `build_cues.py` also indexes spelled-out numbers as digits ("two hundred and twenty five" -> `225`), so number triggers survive however the narrator reads them.
+
 ## Review gates (always)
 
 1. **Transcript:** names fixed.
