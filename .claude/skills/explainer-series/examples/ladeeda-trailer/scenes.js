@@ -69,8 +69,8 @@ export default (E) => {
     badnews() {
       backrooms(1, false); x.fillStyle = 'rgba(20,18,29,0.35)'; x.fillRect(0, 0, W, H);
       you(960, 1010, 1.1, { face: 'scared', id: 200 });
-      scaled(960, 360, pop(wt('bad')), () => { card(960, 360, 760, 220, P.light, 300, -4); hand('BAD NEWS.', 960, 370, 150, P.red); });
-      if (on(wt('rooms'))) scaled(960, 640, pop(wt('rooms')), () => { card(960, 640, 640, 110, '#111', 310, 2); label('THE BACKROOMS', 960, 642, 60, P.highlight, { weight: 700 }); });
+      scaled(960, 300, pop(wt('bad')), () => { card(960, 300, 760, 210, P.light, 300, -4); hand('BAD NEWS.', 960, 310, 150, P.red); });
+      if (on(wt('rooms'))) scaled(960, 495, pop(wt('rooms')), () => { card(960, 495, 640, 100, '#111', 310, 2); label('THE BACKROOMS', 960, 497, 58, P.highlight, { weight: 700 }); });
       if (on(wt('somewhere'))) { const g = prog(wt('somewhere'), 0.4); x.fillStyle = `rgba(123,92,214,${0.35 * g})`; for (let i = 0; i < 6; i++) x.fillRect(0, hash(i + E.B) * H, W, 14 + 30 * hash(i * 3 + E.B)); hand('...or somewhere else', 960, 130, 80, P.light); }
     },
     planet() {
@@ -89,7 +89,7 @@ export default (E) => {
       card(960, 470, 560, 470, P.light, 520, -2); x.fillStyle = P.red; x.fillRect(680, 240, 560, 80); label('YEAR', 960, 282, 44, P.light, { weight: 700 });
       label(years[yi], 960, 500, 130, P.ink, { weight: 700 });
       if (on(tw)) scaled(960, 790, pop(wt('history', tw - 1)), () => { card(960, 790, 900, 120, P.red, 530, 3); label('WORST YEAR IN HISTORY', 960, 792, 58, P.light, { weight: 700 }); });
-      if (on(wt('born', tw))) { you(1560, 1000, 0.5, { face: 'scared', id: 540 }); hand('to be born at all.', 1560, 640, 60, P.ink); }
+      if (on(wt('born', tw))) { you(1660, 1030, 0.7, { face: 'scared', id: 540 }); hand('to be born at all.', 1660, 640, 72, P.ink); }
     },
     worlds() {
       ground(P.night);
