@@ -72,19 +72,37 @@ export async function createEngine(canvas, series, cues) {
   // mask: domino-mask colour (eyes become white slits); hairC: hair colour
   E.person = function person(cx, cy, s, o = {}) {
     const base = (o.char && series.characters?.[o.char]) || {};
-    const { skin = P.skin || '#B97A4E', top = P.accent || '#2F7FC1', hair = 'bun', hairC = P.ink, arms = 'down', id = 1, face = 'calm', mark = null, mask = null, flip = 1 } = { ...base, ...o };
+    const { skin = P.skin || '#B97A4E', top = P.accent || '#2F7FC1', hair = 'bun', hairC = P.ink, arms = 'down', id = 1, face = 'calm', mark = null, mask = null, flip = 1,
+      band = null, shawl = null, collar = null, tabard = null, hat = null, hatC = '#15151A', emblem = null } = { ...base, ...o };   // traits taken from the wiki reference
     s *= series.personScale || 1.35; x.save(); x.translate(cx, cy); x.scale(s * flip, s);
     const armP = { down: [[-40, -150], [-62, -60]], up: [[-40, -150], [-80, -280]], point: [[40, -150], [150, -180]], cross: [[-40, -150], [20, -120]], wave: [[40, -150], [90, -250]] }[arms];
     const arm2 = arms === 'up' ? [[40, -150], [80, -280]] : arms === 'cross' ? [[40, -150], [-20, -110]] : [[40, -150], [62, -60]];
     E.ink([armP[0], armP[1]], id + 1, { w: 18, color: top === P.ink ? '#333' : top }); E.ink([arm2[0], arm2[1]], id + 2, { w: 18, color: top === P.ink ? '#333' : top });
     E.shape([[-55, 0], [-48, -120], [-30, -165], [30, -165], [48, -120], [55, 0]], id + 3, top, { line: 5 });
     E.shape(E.circ(0, -215, 50, 54), id + 4, skin, { line: 5 });
+    // signature traits (set them from the wiki image): collar, tabard, shawl + brooch, emblem
+    if (collar) E.shape([[-30, -165], [0, -128], [30, -165], [18, -168], [0, -148], [-18, -168]], id + 20, collar, { line: 3 });
+    if (tabard) { E.shape([[-34, -150], [34, -150], [30, -20], [0, -8], [-30, -20]], id + 21, tabard, { line: 4 }); E.shape([[-10, -120], [10, -120], [0, -100]], id + 22, P.light, { line: 2 }); }
+    if (shawl) { E.shape([[-62, -100], [-56, -150], [-30, -170], [0, -150], [30, -170], [56, -150], [62, -100], [30, -112], [0, -98], [-30, -112]], id + 23, shawl, { line: 4 });
+      E.shape(E.circ(-26, -128, 10), id + 24, '#F4F1E6', { line: 2 }); x.fillStyle = '#3FB25A'; x.beginPath(); x.arc(-26, -128, 4, 0, TAU); x.fill(); }
+    if (emblem) { E.shape(E.circ(0, -100, 20), id + 25, emblem, { line: 3 }); x.fillStyle = 'rgba(0,0,0,0.35)'; x.beginPath(); x.arc(0, -100, 8, 0, TAU); x.fill(); }
     if (hair === 'bun') { E.shape([[-52, -220], [-48, -262], [0, -275], [48, -262], [52, -222], [30, -250], [-30, -250]], id + 5, hairC, { line: 0 }); E.shape(E.circ(0, -284, 22), id + 6, hairC, { line: 3 }); }
     if (hair === 'bob') E.shape([[-56, -180], [-54, -250], [0, -276], [54, -250], [56, -180], [40, -230], [-40, -230]], id + 5, hairC, { line: 0 });
     if (hair === 'tail') { E.shape([[-52, -222], [-48, -262], [0, -276], [48, -262], [52, -222], [30, -248], [-30, -248]], id + 5, hairC, { line: 0 }); E.shape([[44, -250], [78, -232], [70, -190], [52, -206]], id + 6, hairC, { line: 3 }); }
     if (hair === 'white') { E.shape([[-52, -222], [-48, -262], [0, -276], [48, -262], [52, -222], [30, -248], [-30, -248]], id + 5, '#EDEDED', { line: 3 }); E.shape([[-30, -195], [30, -195], [18, -140], [0, -128], [-18, -140]], id + 6, '#EDEDED', { line: 3 }); }
     if (hair === 'helmet') E.shape([[-58, -205], [-54, -262], [0, -285], [54, -262], [58, -205], [70, -200], [-70, -200]], id + 5, '#3A3F4A', { line: 4 });
+    if (hair === 'lowtail') { E.shape([[-56, -200], [-54, -258], [-20, -280], [30, -278], [56, -250], [60, -196], [44, -232], [20, -246], [0, -236], [-20, -248], [-40, -232]], id + 5, hairC, { line: 0 });   // messy wavy, low ponytail over the shoulder
+      E.shape([[-50, -200], [-74, -170], [-70, -120], [-84, -80], [-56, -100], [-50, -150], [-40, -190]], id + 6, hairC, { line: 3 }); E.ink([[-62, -196], [-46, -188]], id + 12, { w: 7, color: band || P.highlight }); }
+    if (hair === 'hightail') { E.shape([[-52, -222], [-48, -262], [0, -278], [48, -262], [52, -222], [30, -250], [-30, -250]], id + 5, hairC, { line: 0 });   // high ponytail with a braid
+      E.shape([[20, -270], [60, -300], [84, -270], [76, -220], [86, -170], [66, -170], [62, -230], [44, -262]], id + 6, hairC, { line: 3 }); for (let k = 0; k < 3; k++) E.ink([[66, -236 + k * 22], [82, -230 + k * 22]], id + 13 + k, { w: 3, color: P.light }); }
+    if (band) E.shape([[-52, -244], [-30, -262], [0, -268], [30, -262], [52, -244], [50, -234], [0, -256], [-50, -234]], id + 16, band, { line: 3 });
+    if (hat === 'cone') { E.shape([[-96, -232], [0, -320], [96, -232], [0, -246]], id + 17, hatC, { line: 4 }); E.ink([[0, -320], [0, -336]], id + 18, { w: 6, color: hatC }); }
     if (mark) E.ink([[0, -192], [0, -270]], id + 7, { w: 12, color: mark });
+    if (mask === 'demon') {   // Anti-Avatar festival mask of Korra: red/black face, white eyes, lolling tongue, wild hair
+      E.shape([[-70, -170], [-80, -250], [-40, -300], [0, -284], [40, -300], [80, -250], [70, -170], [40, -200], [-40, -200]], id + 26, '#2B2220', { line: 3 });
+      E.shape(E.circ(0, -215, 54, 56), id + 27, '#C2322A', { line: 4 }); E.shape([[-46, -232], [-10, -226], [-4, -206], [-44, -204]], id + 28, '#15111A', { line: 0 }); E.shape([[46, -232], [10, -226], [4, -206], [44, -204]], id + 29, '#15111A', { line: 0 });
+      x.fillStyle = '#FFFFFF'; x.beginPath(); x.ellipse(-26, -218, 10, 7, 0, 0, TAU); x.ellipse(26, -218, 10, 7, 0, 0, TAU); x.fill();
+      E.shape([[-26, -186], [26, -186], [16, -150], [0, -142], [-16, -150]], id + 30, '#E86A8A', { line: 3 }); x.restore(); return; }
     if (mask) { E.shape([[-50, -236], [-20, -246], [0, -232], [20, -246], [50, -236], [44, -206], [16, -204], [0, -214], [-16, -204], [-44, -206]], id + 11, mask, { line: 3 });
       x.fillStyle = '#FFFFFF'; x.beginPath(); x.ellipse(-22, -220, 11, 6, 0.2, 0, TAU); x.ellipse(22, -220, 11, 6, -0.2, 0, TAU); x.fill(); E.ink([[-12, -192], [0, -188], [12, -192]], id + 8, { w: 3 }); x.restore(); return; }
     x.fillStyle = P.ink;

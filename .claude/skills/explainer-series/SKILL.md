@@ -77,7 +77,7 @@ After that, fixes are patches, never full re-renders.
 1. Copy `$K/templates/series.json` to `series/<name>/series.json` in the user's repo, and agree on:
    - **palette:** the keys `paper ink light grey red accent accent2 highlight glow night sand skin ok`, plus any subject colours (e.g. the four elements);
    - **section label** ("REASON", "RULE", "MYTH", "PART") and the card colours;
-   - **characters:** `{name: {skin, top, hair: bun|bob|bald|tail|white|helmet, hairC, mark, mask, face}}`. One signature trait each; `mask` gives a domino mask. Keep suit colours distinct from the backgrounds they will stand on (green on green vanishes).
+   - **characters:** `{name: {skin, top, hair: bun|bob|bald|tail|white|helmet, hairC, mark, mask, face}}`. One signature trait each; `mask` gives a domino mask (`'demon'` = festival demon mask). Wiki-matched traits: `band` (headband colour), `shawl` (shawl + brooch), `collar`, `tabard` (uniform tabard), `hat: 'cone'` + `hatC`, `emblem` (chest disc), and hair `lowtail` (low ponytail over the shoulder) / `hightail` (high ponytail with braid). Add a `_wiki` note per character naming the reference image. Keep suit colours distinct from the backgrounds they will stand on (green on green vanishes).
    - **music:** `recipe` + `args` (`guofeng` for East-Asian worlds, `darksynth`/`synthwave` for sci-fi, `lofi` for essays, `ambient`, `explainer`, ...);
    - **fonts:** OFL files from `https://cdn.jsdelivr.net/gh/google/fonts@main/ofl/<family>/<File>.ttf` into `series/<name>/fonts/` (`hand` = brush/marker, `label` = rounded sans).
 2. Start `series/<name>/fixes.json` for names Whisper mishears (`{"Cora": "Korra"}`). Grow it every episode.
