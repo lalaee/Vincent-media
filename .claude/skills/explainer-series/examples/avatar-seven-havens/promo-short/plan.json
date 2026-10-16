@@ -1,0 +1,111 @@
+{
+ "fps": 30,
+ "tail": 3.5,
+ "scenes": [
+  [
+   "bend",
+   0.0
+  ],
+  [
+   "worse",
+   "or@3.849"
+  ],
+  [
+   "monster",
+   "in@5.542"
+  ],
+  [
+   "police",
+   "a@13.181"
+  ],
+  [
+   "comet",
+   "a@16.871"
+  ],
+  [
+   "korra",
+   "a@20.317"
+  ],
+  [
+   "channel",
+   "on@24.662"
+  ],
+  [
+   "end",
+   "watch@32.763"
+  ]
+ ],
+ "sections": {},
+ "chapters": [
+  0,
+  40.46
+ ],
+ "sfx": [
+  {
+   "word": "bend",
+   "after": 0.0,
+   "kind": "magic",
+   "gain": -12
+  },
+  {
+   "word": "taken",
+   "after": 2.755,
+   "kind": "impact:punch",
+   "gain": -9
+  },
+  {
+   "word": "worse",
+   "after": 3.849,
+   "kind": "impact:metal",
+   "gain": -8
+  },
+  {
+   "word": "monster",
+   "after": 9.007,
+   "kind": "boom",
+   "gain": -10
+  },
+  {
+   "word": "rewrites",
+   "after": 14.69,
+   "kind": "glitch",
+   "gain": -12
+  },
+  {
+   "word": "comet",
+   "after": 16.871,
+   "kind": "whoosh",
+   "gain": -10
+  },
+  {
+   "word": "wiped",
+   "after": 17.3,
+   "kind": "boom",
+   "gain": -8
+  },
+  {
+   "word": "blames",
+   "after": 21.615,
+   "kind": "stamp",
+   "gain": -9
+  },
+  {
+   "word": "ladeeda",
+   "after": 25.0,
+   "kind": "impact:soft",
+   "gain": -10
+  },
+  {
+   "word": "live",
+   "after": 28.606,
+   "kind": "whoosh_air",
+   "gain": -11
+  },
+  {
+   "word": "watch",
+   "after": 32.763,
+   "kind": "chime",
+   "gain": -14
+  }
+ ]
+}

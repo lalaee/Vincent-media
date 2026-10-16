@@ -1,6 +1,6 @@
 ---
 name: explainer-series
-description: Produce episodes of a narrated YouTube explainer series (e.g. "Why it sucks to be X", "Every time Y happened", lore and franchise breakdowns, history or science explainers) as hand-made-looking motion graphics in a flat-vector + frame-by-frame line-boil hybrid, with code-drawn characters and no copyrighted art. Keeps a series "bible" (palette, fonts, characters, section cards, music) so every episode looks like the same show, and turns each new voice-over into a storyboard, pilot and full render. Use when the user sends narration for a series episode, wants to start a new series in this format, or asks for "another one like the Avatar video" or a Ladeeda Worlds episode (the user's YouTube channel; its profile and upload-notes template live here). Also makes each episode's social pack (Instagram/TikTok carousels in 4:5 and 9:16, a music-only bed, captions) and publishes everything to the posts repo. Builds on the narrated-motion-video skill.
+description: Produce episodes of a narrated YouTube explainer series (e.g. "Why it sucks to be X", "Every time Y happened", lore and franchise breakdowns, history or science explainers) as hand-made-looking motion graphics in a flat-vector + frame-by-frame line-boil hybrid, with code-drawn characters and no copyrighted art. Keeps a series "bible" (palette, fonts, characters, section cards, music) so every episode looks like the same show, and turns each new voice-over into a storyboard, pilot and full render. Use when the user sends narration for a series episode, wants to start a new series in this format, or asks for "another one like the Avatar video" or a Ladeeda Worlds episode (the user's YouTube channel; its profile and upload-notes template live here). Also makes each episode's social pack (vertical promo shorts with burned-in word-by-word captions, Instagram/TikTok carousels in 4:5 and 9:16, a music-only bed, captions) and publishes everything to the posts repo. Builds on the narrated-motion-video skill.
 ---
 
 # Explainer series
@@ -116,8 +116,44 @@ Then check sync stills on a handful of hit words, rebuild the bed on the new cha
 2. **Storyboard:** about 30 frames across the whole episode. Look at your own sheet first: overlaps, tiny figures, text on heads, missing glyphs (Fredoka has no arrows, so write `>`).
 3. **Pilot:** the first section rendered with the full mix; the user checks pacing, music level and characters.
 4. **Full render.** Run `$N/scripts/review.py` (levels 1+2, with `--cues cues.json --scenes scenes.js`), look at every sheet, fix and patch before sending. Report specs, hits checked, and 2–4 honest weaknesses.
-5. **Social pack:** both carousel sheets checked, captions backed by the script, then publish.
-6. **Notes after delivery:** fix only the named seconds with `$N/scripts/patch.sh` (narrated-motion-video section 11), never a full re-render.
+5. **Promo short:** transcript and claims confirmed with the user, storyboard approved, review sheets checked.
+6. **Social pack:** both carousel sheets checked, captions backed by the script, then publish.
+7. **Notes after delivery:** fix only the named seconds with `$N/scripts/patch.sh` (narrated-motion-video section 11), never a full re-render.
+
+## Promo short (9:16, 30–60 s, per episode)
+
+A vertical video for YouTube Shorts, TikTok and Reels that sells the episode. Same characters and colours as the episode, big burned-in captions (most viewers watch muted), and an end card pointing to the full video.
+
+**Audio, in order of preference**
+1. **A dedicated recording** of a short script: hook in the first 2 s, 4–6 punchy lines, end on "Watch the full story on YouTube: Ladeeda Worlds". Best results.
+2. **A cut from the episode narration**, if no recording: pick sentences from the transcript (hook + one section + a closing line), cut inside real pauses (`ffmpeg -af silencedetect=n=-38dB:d=0.12` around each cut; Whisper word times run ~0.2 s early), join with 0.45–0.6 s of silence and 20–50 ms fades, then **re-transcribe the cut** to prove no word was clipped. Show the user the cut as text **and as audio** before rendering.
+
+```bash
+$K/scripts/new_short.sh work/mg <slug>-short <episode>/series.json <episode>/fonts    # 1080x1920 page + short_captions.js
+cd work/mg/demos/<slug>-short && cp <recording> narration.mp3
+HF_HOME=<scratch>/hf ../../../venv/bin/python $N/scripts/transcribe.py narration.mp3 transcript.json <names...>
+python3 $K/scripts/fix_names.py transcript.json series/<name>/fixes.json          # then show the user the transcript
+python3 $K/scripts/make_captions.py transcript.json captions.js --case avatar=Avatar
+#   plan.json + scenes.js (example: examples/avatar-seven-havens/promo-short/), wrap every scene with drawCaptions
+python3 $K/scripts/build_cues.py transcript.json plan.json cues.json && python3 $K/scripts/check_cues.py cues.json scenes.js
+../../../r.sh demos/<slug>-short --stills <2 per scene>  ->  storyboard (8 columns)  ->  approval
+$N/scripts/bed_chapters.sh ../../../venv/bin/python episode_bed.py out/bed.wav <dur> 0 <dur> && $N/scripts/mix.sh narration.mp3 out/bed.wav out/audio.wav <dur>
+../../../r.sh demos/<slug>-short --out demos/<slug>-short/out/video.mp4                   # ~0.45 s/frame: 40 s ≈ 10 min
+../../../venv/bin/python $N/scripts/review.py out/video.mp4 transcript.json out/review --cues cues.json --scenes scenes.js --level 3   # tall tiles for 9:16
+$K/scripts/publish.sh <posts repo> short <slug>-promo out/video.mp4 caption.md
+```
+
+**Before the storyboard:** show the transcript with fixes, and ask about anything ambiguous (the transcriber heard "lore" as "law" in both takes of the Seven Havens promo; "Ladeeda Worlds" as "the Deedaworlds"). Flag any claim the short makes that the episode script doesn't cover; the user decides whether to keep it.
+
+**Layout (1080×1920)**
+- One scene per line (6–9 scenes), each opening with something on screen; a hand-lettered keyword at y ≈ 200–300; art in y ≈ 350–1300.
+- Captions (`short_captions.js`): chunks of up to 4 words, current word in gold, box at y ≈ 1450 between x 60–1020. Keep key art and text out of the bottom ~320 px and the right ~150 px (app description and buttons).
+- Colours must contrast with their background (dark bars on a dark ground vanished in the first cut).
+- End card: channel name, "Watch the full story on YouTube", a thumbnail of the episode title card, a SUBSCRIBE circle, and `"tail": 3.5` so it holds after the last word.
+
+**Re-voicing a short** (new take of the same script): transcribe the new take, apply the same word fixes, `retime.py old new plan.json` as for episodes, **regenerate `captions.js`** from the new transcript, rebuild cues, bed and mix, then render and review again. Scene timings follow the words automatically; check that fast beats (under ~1 s) still read.
+
+**`caption.md`** next to the video: a Shorts title, a TikTok/Reels caption with hashtags, a pinned-comment dilemma, and a note to set the full episode as the Short's related video. Example: `examples/avatar-seven-havens/promo-short/caption.md`.
 
 ## Social pack (every episode, after the final review)
 
