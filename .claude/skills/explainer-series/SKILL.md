@@ -13,6 +13,57 @@ are shared, so an episode is mostly *deciding* what to show and when, not re-bui
 `$K` = this skill's dir. `examples/avatar-seven-havens/` is a complete worked episode: bible, name fixes, plan (original voice; `plan_charlotte.json` is the same plan retimed to the second narrator) and 42 scenes.
 `examples/green-lantern-sample/` shows starting a *new* series: a bible (masked heroes, a glowing-construct look, darksynth) and 5 sample scenes (cast line-up, a construct drawing itself, an oath card, a section card, versus). Render a sample like this for the user before episode 1 of any new series.
 
+## Pipeline at a glance
+
+There are three skills:
+- **explainer-series** (this one): the episode and the social pack.
+- **youtube-thumbnail**: the YouTube thumbnail plus TikTok and Instagram covers.
+- **narrated-motion-video**: the shared render, mix, review and patch tools.
+
+**Once per series:** the series bible (palette, fonts, section cards, characters, music recipe) and the channel profile (Ladeeda Worlds).
+
+**Each episode**
+
+| # | Step | What happens | User check |
+|---|---|---|---|
+| 1 | Transcript | Word-timed transcription, misheard names fixed from `fixes.json` | Confirms the transcript |
+| 2 | **Wiki fact-check** | `wiki_check.py` checks every name, place and term on the Fandom wiki: spelling flags, claims, and real character designs that drive the bible traits | Told what differs, **before** anything is drawn |
+| 3 | Plan + scenes | Beats keyed to spoken words, something new every 3–4 s, REASON cards, colour wipes | — |
+| 4 | Storyboard | ~30 stills, self-reviewed first | Approves |
+| 5 | Sound | Chaptered music bed, SFX on hit words, −14 LUFS | — |
+| 6 | Pilot | First ~90–110 s with the full mix | Checks pacing, music, characters |
+| 7 | Full render | 16:9 | — |
+| 8 | Review | `review.py` levels 1–3 (numbers, scene sheets, a frame every ~2 s); fix before sending | Watches |
+| 9 | Notes | `patch.sh` re-renders only the affected seconds, from the scene start | — |
+
+**After the episode**
+- **Thumbnail + covers** (youtube-thumbnail skill):
+  - fetch the wiki reference;
+  - draw a detailed portrait with the two-word caption and arrow;
+  - compare it side by side and at phone size, and crop a bit below the shoulders;
+  - then make the TikTok 9:16 and Instagram 4:5 covers from the same portrait, checked against the safe zones.
+- **YouTube notes:** title, description, chapters and tags in the Ladeeda Worlds template, with spellings from the fact-check.
+- **Promo short** (9:16, 30–60 s): a dedicated recording or a cut from the narration, word-by-word captions, an end card, and a level 3 review.
+- **Social pack:** carousels in 4:5 and 9:16, a music-only bed, and captions backed by the script.
+
+**Publish:**
+- `publish.sh` → ladeeda-posts (Git LFS for large videos):
+  - `Long form/` (master, share copy, srt, notes, music, `thumbnails/` including the covers);
+  - `Short form/`;
+  - `Carousels/`;
+  - `Channel art/`.
+- Changes to the skills → vincent-media.
+
+**User approval points:**
+1. Transcript and fact-check
+2. Storyboard
+3. Pilot
+4. Final video
+5. Thumbnail and covers
+6. Promo short and carousels
+
+After that, fixes are patches, never full re-renders.
+
 ## The format (what made video 1 work)
 
 - **Look:** flat colour shapes that move smoothly with elastic pops (30 fps), plus ink outlines, hand-lettering and cel FX (bursts, lightning, smoke, spirit wisps) redrawn every ~2.5 frames, so lines "boil". Paper grain on top, and a flat colour-block wipe into each scene.
@@ -138,7 +189,7 @@ Then check sync stills on a handful of hit words, rebuild the bed on the new cha
 
 ## Thumbnail (per episode)
 
-Use the **`youtube-thumbnail`** skill. It covers the user's preferred style (a detailed cel-shaded portrait of the main character, matched to the real design from the Fandom wiki, on white, with a two-word caption and an arrow) and walks through every step: fetch the reference, draw, compare side by side and at phone size, crop, then publish. The finished Pavi example is in `examples/avatar-seven-havens/thumbnail/`: scene `d` is the approved portrait, and `a`–`c` are concept variants for Test & Compare. Publish into the episode's `Long form/<folder>/thumbnails/`.
+Use the **`youtube-thumbnail`** skill (it also makes the TikTok 9:16 and Instagram 4:5 covers from the same portrait). It covers the user's preferred style (a detailed cel-shaded portrait of the main character, matched to the real design from the Fandom wiki, on white, with a two-word caption and an arrow) and walks through every step: fetch the reference, draw, compare side by side and at phone size, crop, then publish. The finished Pavi example is in `examples/avatar-seven-havens/thumbnail/`: scene `d` is the approved portrait, and `a`–`c` are concept variants for Test & Compare. Publish into the episode's `Long form/<folder>/thumbnails/`.
 
 ## Promo short (9:16, 30–60 s, per episode)
 

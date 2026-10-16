@@ -1,6 +1,6 @@
 ---
 name: youtube-thumbnail
-description: Make a YouTube thumbnail (1280x720) in the Ladeeda Worlds house style - a detailed cel-shaded portrait of the episode's main character matched to the character's real design (fetched from its Fandom wiki), on white, with a two-word caption and a hand-drawn arrow. Use when asked for a thumbnail, cover image or "the portrait thumbnail" for an episode.
+description: Make a YouTube thumbnail (1280x720), plus matching TikTok (1080x1920) and Instagram (1080x1350) covers, in the Ladeeda Worlds house style - a detailed cel-shaded portrait of the episode's main character matched to the character's real design (fetched from its Fandom wiki), on white, with a two-word caption and a hand-drawn arrow. Use when asked for a thumbnail, cover image, TikTok/Instagram/Reels cover or "the portrait thumbnail" for an episode.
 ---
 
 # YouTube thumbnail (detailed portrait style)
@@ -97,6 +97,31 @@ Fix the problems, re-render, and only then send the image to the user. Expect a 
 - Copy the final `portrait.js` and `scenes.js` into `examples/<character>-<show>/` in this skill.
 - Optional: 2–3 concept variants for YouTube "Test & Compare". See scenes `a`–`c` in `$K/examples/avatar-seven-havens/thumbnail/scenes.js` (wanted poster, hero→villain, two elements = prison).
 
+## 6. TikTok and Instagram covers (same portrait, vertical layout)
+
+Once the YouTube thumbnail is approved, make the vertical versions from the **same `portrait.js`**. Don't redraw anything.
+
+`new_thumb.sh` already made `tt.html` (1080×1920) and `ig.html` (1080×1350), both pointing at `scenes_social.js` (template: `templates/scenes_social_template.js`).
+- The layout stacks: the caption on top (centred, "worst" light and "job ever" bold), the portrait below, and the curved arrow running from the caption down to her head. The body bleeds off the bottom.
+- Per-format numbers live in one `L` object:
+  - 9:16: caption at y 420 and 580 (124 and 172 px); portrait at (520, 1130) × 1.7.
+  - 4:5: caption at y 130 and 270 (104 and 150 px); portrait at (520, 740) × 1.5.
+- **TikTok safe zones:**
+  - Caption and face must sit inside the centre 1080×1440 (y 240–1680), because the profile grid crops covers to 3:4.
+  - Keep the face and caption out of the bottom 320 px (caption and UI) and the right 150 px (buttons). Hair or clothes under the UI is fine.
+- **Instagram:** a 4:5 feed post. The profile grid shows the centre 3:4, so keep the caption and face away from the side edges. For a Reels cover, use the 9:16 file.
+
+```bash
+r.sh demos/<slug>-thumb --page tt.html --stills 0.5 && cp out/stills/t00.50.png thumbnail-tiktok-9x16.png
+r.sh demos/<slug>-thumb --page ig.html --stills 0.5 && cp out/stills/t00.50.png thumbnail-instagram-4x5.png
+python3 $T/scripts/compare.py thumbnail-tiktok-9x16.png tt-check.jpg --format tiktok        # red = grid crop, blue = app UI
+python3 $T/scripts/compare.py thumbnail-instagram-4x5.png ig-check.jpg --format instagram
+```
+
+Look at both check sheets: the face and caption go inside the red box and out of the blue boxes, and the small copy must still read. Publish both next to the YouTube thumbnail (`<episode folder>/thumbnails`).
+
 ## Specs
 
 1280×720 PNG, under 2 MB, 16:9. It must be readable at 168×94. Use lower-case two-word captions only: no long titles, and don't repeat the video title.
+
+TikTok cover 1080×1920 PNG; Instagram post 1080×1350 PNG (4:5). Both use the same portrait and caption as the YouTube thumbnail.
