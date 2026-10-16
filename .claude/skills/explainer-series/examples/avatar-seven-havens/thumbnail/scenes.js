@@ -1,6 +1,7 @@
 // YouTube thumbnails (1280x720) for "Why It Sucks To Be the Avatar in Seven Havens": three variants for Test & Compare.
 // Rules: one big face, 2-4 words max, strong contrast, readable at 168x94; keep the bottom-right corner clear (timestamp).
-import { paviPortrait } from './portrait.js';
+
+import { portrait } from './portrait.js';
 export default (E) => {
   const { x, P, W, H, TAU, ink, shape, circ, rectP, hand, label, scaled, person, card, burst, cross, ground } = E;
   function element(type, cx, cy, r, id = 1) {
@@ -46,13 +47,15 @@ export default (E) => {
     },
     d() {                                                  // D: detailed portrait, white background, two-word caption + arrow
       x.fillStyle = '#FFFFFF'; x.fillRect(0, 0, W, H);
-      paviPortrait(x, 410, 398, 1.12);
+      portrait(x, 400, 332, 1.17);
       x.save(); x.fillStyle = '#14101A'; x.textBaseline = 'middle'; x.textAlign = 'left';
       x.font = '400 104px Fredoka, sans-serif'; x.fillText('worst', 800, 290);
       x.font = '700 132px Fredoka, sans-serif'; x.fillText('job ever', 770, 410); x.restore();
       x.save(); x.strokeStyle = '#14101A'; x.lineWidth = 6; x.lineCap = 'round'; x.lineJoin = 'round';
       x.beginPath(); x.moveTo(840, 510); x.quadraticCurveTo(790, 580, 660, 545); x.stroke();
-      x.beginPath(); x.moveTo(684, 527); x.lineTo(658, 545); x.lineTo(686, 561); x.stroke(); x.restore();
+      const ang = Math.atan2(545 - 580, 660 - 790), L = 30;          // head follows the curve's end direction, tip on the line's end
+      x.beginPath(); x.moveTo(660 - L * Math.cos(ang - 0.5), 545 - L * Math.sin(ang - 0.5)); x.lineTo(660, 545);
+      x.lineTo(660 - L * Math.cos(ang + 0.5), 545 - L * Math.sin(ang + 0.5)); x.stroke(); x.restore();
     },
   };
 };
