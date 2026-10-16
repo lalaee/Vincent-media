@@ -33,6 +33,7 @@ mkdir ref-<name> && python3 -I $T/scripts/get_wiki_ref.py <wiki>.fandom.com "<Pa
   - big green eyes and brown skin;
   - a yellow-green shawl with a white flower/leaf brooch and a green gem, and a salmon top.
 - Fact-check the **caption** too: it must be true to the wiki page, not just the script. Reuse the episode's `factcheck/report.md` (explainer-series `wiki_check.py`) if it exists.
+- Anything else in the picture (a background place, a prop, a creature, a second character) is drawn from its wiki reference too. Get it with `get_wiki_ref.py` or explainer-series `wiki_check.py --images 4`; never invent it.
 - Note any spelling the wiki gives (e.g. **Ellora**) and flag it if the episode spells it differently.
 - If the page title is unknown, search with `api.php?action=query&list=search&srsearch=<name> <show>`.
 

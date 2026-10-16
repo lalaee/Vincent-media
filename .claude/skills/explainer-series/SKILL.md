@@ -92,7 +92,7 @@ cd work/mg/demos/<slug> && cp <recording> narration.mp3
 HF_HOME=<scratch>/hf ../../../venv/bin/python $N/scripts/transcribe.py narration.mp3 transcript.json <names...>
 python3 $K/scripts/fix_names.py transcript.json series/<name>/fixes.json     # then show the user the transcript
 python3 $N/scripts/words.py transcript.json                                   # every word with its time
-python3 -I $K/scripts/wiki_check.py <wiki>.fandom.com factcheck <every name, place, term in the script>   # BEFORE drawing anything
+python3 -I $K/scripts/wiki_check.py <wiki>.fandom.com factcheck --images 4 <every character, place, creature, object, event the script names or the scenes will show>   # BEFORE drawing anything
 #   read factcheck/report.md + LOOK at every image -> fix spellings, bible traits, claims; tell the user what differs
 #   write plan.json + scenes.js (below)
 python3 $K/scripts/build_cues.py transcript.json plan.json cues.json
@@ -115,10 +115,18 @@ Lore episodes are about a real franchise, so check **both the script and the pic
 - **Script:**
   - Run `wiki_check.py` with every character, place, faction and term the narration names. Fix every **SPELLING?** flag in labels, captions, `fixes.json` and the YouTube notes.
   - Check each claim (who did what, ages, which haven, who the Avatar is) against the page text. Tell the user about anything the script gets wrong *before* the render, since narration can't be patched afterwards.
-- **Images:**
-  - Open every saved infobox image and set each character's bible entry from it: hair colour and style, eye colour, outfit colours, signature accessory.
-  - The figures stay simple and code-drawn, but their colours and signature traits must read as that character.
-  - Put the resulting spec in a comment next to the character in `series.json`.
+- **Images: every illustration is drawn from a wiki reference, never from memory or invention.** This covers characters, places, creatures, vehicles, objects and scenes or events.
+  - `wiki_check.py --images 4` saves each term's infobox image plus up to 4 page or gallery pictures in `factcheck/<Term>/`. **Look at every one**, and set aside the off-topic ones: galleries mix in other characters and older series (Ellora's page pulled in Long Feng).
+  - Write a short **visual spec** per item in `factcheck/visual-specs.md`:
+    - **Character:** hair colour and shape, eye colour, skin, outfit colours, signature accessory.
+    - **Place:** terrain and architecture (Ellora sits in slot canyons, with sand and wind), the main colours, one landmark shape.
+    - **Creature or object:** silhouette, colours, defining parts.
+    - **Scene or event:** who is there, the setting, what is happening, as in the reference shot.
+  - Drawing from the specs:
+    - The figures and sets stay simple and code-drawn, but their colours, silhouettes and signature traits must read as that thing.
+    - Put the character specs as comments in `series.json`, and the place, object and scene specs next to the scene in `scenes.js`.
+    - A scene that shows a canon moment follows the reference shot's staging (who stands where, the setting), not a guess.
+  - If the wiki has no picture of something, say so and agree with the user how to draw it. Don't silently invent it.
 - Use the same wiki facts for the promo short, carousels, YouTube notes and thumbnail (the `youtube-thumbnail` skill).
 
 ### plan.json
@@ -180,7 +188,7 @@ Then check sync stills on a handful of hit words, rebuild the bed on the new cha
 
 0. **Wiki fact-check:** `factcheck/report.md` has no open SPELLING? flags, claims are checked, and character bible traits match the wiki images.
 1. **Transcript:** names fixed, and `check_cues.py` clean.
-2. **Storyboard:** about 30 frames across the whole episode. Look at your own sheet first: overlaps, tiny figures, text on heads, missing glyphs (Fredoka has no arrows, so write `>`).
+2. **Storyboard:** about 30 frames across the whole episode. Compare each frame that shows a named character, place or canon scene with its wiki reference and visual spec: right colours and silhouette, right setting and staging. Then look at your own sheet for layout problems: overlaps, tiny figures, text on heads, missing glyphs (Fredoka has no arrows, so write `>`).
 3. **Pilot:** the first section rendered with the full mix; the user checks pacing, music level and characters.
 4. **Full render.** Run `$N/scripts/review.py` (levels 1+2, with `--cues cues.json --scenes scenes.js`), look at every sheet, fix and patch before sending. Report specs, hits checked, and 2–4 honest weaknesses.
 5. **Promo short:** transcript and claims confirmed with the user, storyboard approved, review sheets checked.

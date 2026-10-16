@@ -57,6 +57,7 @@ Pass proper nouns as hints. **Show the user the transcript** and fix misheard wo
 
 ## 4. Assets
 
+- **Franchise, lore or real-world subjects:** draw every character, place, creature, object and scene from a reference, never from memory. For Fandom wikis use `explainer-series/scripts/wiki_check.py <wiki> refs --images 4 <terms...>`, which saves infobox and gallery images plus a spelling/facts report. Look at each image, write a one-line visual spec per item (colours, silhouette, signature traits, setting), build the drawing from it, and compare storyboard frames against it.
 - `fetch_images.py` (wiki / wikipedia / commons). Writes `meta.json` with sources for the credits.
 - Crops: `crops.py --grid img out.jpg` to estimate positions, then `crops.py dir boxes.json sheet.jpg`. **Look at the sheet** and fix the boxes; first guesses usually miss faces.
 - Treatment follows the style. For collage: halftone, white scissor edge or torn-paper rim (PIL); images that already have alpha are ready-made cut-outs. Plain backgrounds can be keyed out with OpenCV (Lab distance from the background, morphological open to strip thin lines and text, keep the largest component, `cv2.inpaint` leftover marks). GrabCut also works. `rembg` needs a model download that is usually blocked.
