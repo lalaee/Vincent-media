@@ -1,6 +1,6 @@
 ---
 name: explainer-series
-description: Produce episodes of a narrated YouTube explainer series (e.g. "Why it sucks to be X", "Every time Y happened", lore and franchise breakdowns, history or science explainers) as hand-made-looking motion graphics in a flat-vector + frame-by-frame line-boil hybrid, with code-drawn characters and no copyrighted art. Keeps a series "bible" (palette, fonts, characters, section cards, music) so every episode looks like the same show, and turns each new voice-over into a storyboard, pilot and full render. Use when the user sends narration for a series episode, wants to start a new series in this format, or asks for "another one like the Avatar video" or a Ladeeda Worlds episode (the user's YouTube channel; its profile and upload-notes template live here). Builds on the narrated-motion-video skill.
+description: Produce episodes of a narrated YouTube explainer series (e.g. "Why it sucks to be X", "Every time Y happened", lore and franchise breakdowns, history or science explainers) as hand-made-looking motion graphics in a flat-vector + frame-by-frame line-boil hybrid, with code-drawn characters and no copyrighted art. Keeps a series "bible" (palette, fonts, characters, section cards, music) so every episode looks like the same show, and turns each new voice-over into a storyboard, pilot and full render. Use when the user sends narration for a series episode, wants to start a new series in this format, or asks for "another one like the Avatar video" or a Ladeeda Worlds episode (the user's YouTube channel; its profile and upload-notes template live here). Also makes each episode's social pack (Instagram/TikTok carousels in 4:5 and 9:16, a music-only bed, captions) and publishes everything to the posts repo. Builds on the narrated-motion-video skill.
 ---
 
 # Explainer series
@@ -116,7 +116,37 @@ Then check sync stills on a handful of hit words, rebuild the bed on the new cha
 2. **Storyboard:** about 30 frames across the whole episode. Look at your own sheet first: overlaps, tiny figures, text on heads, missing glyphs (Fredoka has no arrows, so write `>`).
 3. **Pilot:** the first section rendered with the full mix; the user checks pacing, music level and characters.
 4. **Full render.** Run `$N/scripts/review.py` (levels 1+2, with `--cues cues.json --scenes scenes.js`), look at every sheet, fix and patch before sending. Report specs, hits checked, and 2–4 honest weaknesses.
-5. **Notes after delivery:** fix only the named seconds with `$N/scripts/patch.sh` (narrated-motion-video section 11), never a full re-render.
+5. **Social pack:** both carousel sheets checked, captions backed by the script, then publish.
+6. **Notes after delivery:** fix only the named seconds with `$N/scripts/patch.sh` (narrated-motion-video section 11), never a full re-render.
+
+## Social pack (every episode, after the final review)
+
+Every finished episode also gets a carousel, a music-only bed and a publish to the posts repo (`lalaee/ladeeda-posts`: `Long form/`, `Short form/`, `Carousels/`, `Channel art/`).
+
+```bash
+# 1. carousel: cover + setting + one slide per numbered section + call to action (~10 slides)
+$K/scripts/new_carousel.sh work/mg <slug>-carousel <episode>/series.json <episode>/fonts 10
+#    write scenes.js (s1..sN, set N) from templates/carousel_starter.js; full example: examples/avatar-seven-havens/carousel.js
+$K/scripts/render_carousel.sh work <slug>-carousel          # out/instagram-4x5/01.png.., out/tiktok-9x16/.., sheet per size
+# 2. music bed for the posts: the episode's music, no voice, no SFX (full length + 60 s from the title card)
+$K/scripts/social_bed.sh work/mg/demos/<slug> work/venv/bin/python <out dir>
+# 3. publish (clone the posts repo first; videos and audio go through Git LFS)
+$K/scripts/publish.sh <posts repo> long <folder> master.mp4 share.mp4 captions.srt <slug>-youtube.md <out dir>/*.m4a
+$K/scripts/publish.sh <posts repo> carousel <folder> out/instagram-4x5 out/tiktok-9x16 caption.md
+#    then add a row for each new folder to the posts repo README and push
+```
+
+**Carousel rules**
+- Sizes: 1080×1350 (Instagram/Facebook) and 1080×1920 (TikTok photo mode, Stories). Same scenes file; the illustration zone grows a little on 9:16 (capped at 1.15× so art stays within ~860 px of width).
+- **Every claim must be backed by the episode script.** Where the script hedges (`[CHECK]`, "may", "might"), the slide hedges too. Short captions: 2 lines of ~42 characters.
+- Slide 1 is the cover in the series opener ("Why it sucks to be…"); the last slide is the episode's dilemma plus "Full video on YouTube: Ladeeda Worlds"; every slide carries the channel name, `n/N` and `swipe >` (except the last).
+- Use the episode's own characters and colours so the posts match the video.
+- **Review:** look at both contact sheets (`out/sheet-*.jpg`) for overlaps, text touching figures and cut-off art before publishing. The first cut of the Avatar carousel had five such problems.
+- Write `caption.md` next to the slides: Instagram caption, TikTok caption, hashtags (channel tag always), alt text for slide 1, and the music bed to use. Example: `examples/avatar-seven-havens/carousel-caption.md`.
+
+**Music bed:** `social_bed.sh` re-renders the bed with `MUSIC_ONLY=1` (the bed script skips every SFX), then masters it to about −16 LUFS with peaks below −1 dBTP. Give the user the music-only files, not the narrated mix: narration would talk over the post.
+
+**Channel art** (once, or on a rebrand): `examples/ladeeda-channel-art/scenes.js` draws the profile picture (800×800, art inside the centre circle) and the banner (2560×1440; title, tagline and key art inside the 1546×423 safe area, extra doorways for desktop and TV). Render with a page per size, as for carousels, and check the safe-area crop before sending.
 
 ## Practical numbers
 

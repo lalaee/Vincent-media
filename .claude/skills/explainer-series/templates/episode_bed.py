@@ -40,6 +40,7 @@ m = getattr(recipes, MU.get('recipe', 'ambient'))(duration=T1 - T0 + XF, music_l
         outro=rel(C['scenes'][-1]['t']) if last else None, **MU.get('args', {}))
 _sfx = m.sfx
 def place(snd, at, gain=-12, pan=0.0):
+    if os.environ.get('MUSIC_ONLY'): return              # MUSIC_ONLY=1: a clean music bed (social posts), no SFX
     r = rel(at)
     if r is not None and snd is not None: _sfx(snd, at=max(0.0, r), gain=gain, pan=pan)
 
