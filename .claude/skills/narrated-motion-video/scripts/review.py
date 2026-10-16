@@ -100,7 +100,8 @@ say(f"  {issues} issue(s), {len(stale)} static stretch(es)")
 
 def make_sheets(picks, prefix):
     from io import BytesIO
-    TW, TH, CAP, COLS, ROWS = 480, 270, 64, 4, 4
+    vert = int(v['height']) > int(v['width'])                       # 9:16 videos get tall tiles, not squashed 16:9 ones
+    TW, TH, CAP, COLS, ROWS = (300, 533, 64, 6, 3) if vert else (480, 270, 64, 4, 4)
     try: font = ImageFont.truetype(a.font, 19) if a.font else ImageFont.load_default(size=19)
     except Exception: font = ImageFont.load_default()
     sheets = []
