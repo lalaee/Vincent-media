@@ -120,6 +120,16 @@ Then check sync stills on a handful of hit words, rebuild the bed on the new cha
 6. **Social pack:** both carousel sheets checked, captions backed by the script, then publish.
 7. **Notes after delivery:** fix only the named seconds with `$N/scripts/patch.sh` (narrated-motion-video section 11), never a full re-render.
 
+## Thumbnail (per episode)
+
+**The user's preferred style:** a detailed, cel-shaded portrait of the episode's main character, cropped at the chest and filling the frame height, with a strong expression (tears, bruise, bandage), on a plain white background, plus a two-word lower-case caption in black (one light word, one bold) and a hand-drawn arrow pointing at the face. Keep it original: copy the style of references, never a franchise character's design.
+
+- The portrait is drawn with raw canvas paths, not the simple video figures: `examples/avatar-seven-havens/thumbnail/portrait.js` (`paviPortrait(x, cx, cy, scale)`: flat colour + one shadow tone, 7–8 px ink lines, irises with highlights, distress brows, smooth tear streams). Adapt the colours and features per character.
+- 1280×720 PNG under 2 MB; render as a still from a page at that size (scene `d` in `examples/avatar-seven-havens/thumbnail/scenes.js`).
+- Check it at 168×94 (phone size) and keep the bottom-right corner clear for the timestamp.
+- Optionally make 2 more variants for YouTube's "Test & Compare" (scenes `a`–`c` in the example show poster, history-book and prison concepts).
+- Publish into the episode's `Long form/<folder>/thumbnails/`.
+
 ## Promo short (9:16, 30–60 s, per episode)
 
 A vertical video for YouTube Shorts, TikTok and Reels that sells the episode. Same characters and colours as the episode, big burned-in captions (most viewers watch muted), and an end card pointing to the full video.
