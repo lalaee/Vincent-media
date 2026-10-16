@@ -16,7 +16,7 @@ are shared, so an episode is mostly *deciding* what to show and when, not re-bui
 ## The format (what made video 1 work)
 
 - **Look:** flat colour shapes that move smoothly with elastic pops (30 fps), plus ink outlines, hand-lettering and cel FX (bursts, lightning, smoke, spirit wisps) redrawn every ~2.5 frames, so lines "boil". Paper grain on top, and a flat colour-block wipe into each scene.
-- **Characters:** flat geometric people with one signature trait each (hairstyle, forehead mark, outfit colour) defined once in the bible and reused by name. No franchise artwork, so there is no rights risk on YouTube.
+- **Characters:** flat geometric people with one signature trait each (hairstyle, forehead mark, outfit colour) defined once in the bible and reused by name. For franchise characters, take the traits and colours from the wiki infobox image, never from memory. No franchise artwork, so there is no rights risk on YouTube.
 - **Structure:** cold open (the hook and the stakes) > title card > optional spoiler warning > "set the scene" (timeline, map, what changed) > **numbered section cards** ("REASON 1…N") with 2–4 scenes each > recap checklist > tease of the next episode. Ending on the next episode's topic chains the series.
 - **Timing:** every visual beat is keyed to a spoken word, with something changing every 3–4 s. Scenes start on sentence boundaries.
 - **Sound:** your voice on top, the series' music recipe underneath (one cue per chapter), SFX on hit words, a swish on every wipe, a hit and chime on every section card; mastered to −14 LUFS.
@@ -41,6 +41,8 @@ cd work/mg/demos/<slug> && cp <recording> narration.mp3
 HF_HOME=<scratch>/hf ../../../venv/bin/python $N/scripts/transcribe.py narration.mp3 transcript.json <names...>
 python3 $K/scripts/fix_names.py transcript.json series/<name>/fixes.json     # then show the user the transcript
 python3 $N/scripts/words.py transcript.json                                   # every word with its time
+python3 -I $K/scripts/wiki_check.py <wiki>.fandom.com factcheck <every name, place, term in the script>   # BEFORE drawing anything
+#   read factcheck/report.md + LOOK at every image -> fix spellings, bible traits, claims; tell the user what differs
 #   write plan.json + scenes.js (below)
 python3 $K/scripts/build_cues.py transcript.json plan.json cues.json
 python3 $K/scripts/check_cues.py cues.json scenes.js                          # every cue word spoken in its scene?
@@ -54,6 +56,19 @@ $N/scripts/mix.sh narration.mp3 out/bed.wav out/audio.wav <duration>
 ../../../r.sh demos/<slug>                                                     # run_in_background, long timeout
 $N/scripts/check.sh out/video.mp4 out/sync.jpg <hit times...>
 ```
+
+### Fact-check with the Fandom wiki (every episode, before the plan)
+
+Lore episodes are about a real franchise, so check **both the script and the pictures** against the franchise's Fandom wiki before storyboarding. Seven Havens shipped with the city spelled "ELORA" (the wiki says **Ellora**) and with Pavi and Nisha drawn as invented designs (black hair, blue tunic) instead of the real ones (dark-purple hair, green eyes, yellow headband, yellow-green shawl). Both were found too late to fix.
+
+- **Script:**
+  - Run `wiki_check.py` with every character, place, faction and term the narration names. Fix every **SPELLING?** flag in labels, captions, `fixes.json` and the YouTube notes.
+  - Check each claim (who did what, ages, which haven, who the Avatar is) against the page text. Tell the user about anything the script gets wrong *before* the render, since narration can't be patched afterwards.
+- **Images:**
+  - Open every saved infobox image and set each character's bible entry from it: hair colour and style, eye colour, outfit colours, signature accessory.
+  - The figures stay simple and code-drawn, but their colours and signature traits must read as that character.
+  - Put the resulting spec in a comment next to the character in `series.json`.
+- Use the same wiki facts for the promo short, carousels, YouTube notes and thumbnail (the `youtube-thumbnail` skill).
 
 ### plan.json
 
@@ -112,6 +127,7 @@ Then check sync stills on a handful of hit words, rebuild the bed on the new cha
 
 ## Review gates (always)
 
+0. **Wiki fact-check:** `factcheck/report.md` has no open SPELLING? flags, claims are checked, and character bible traits match the wiki images.
 1. **Transcript:** names fixed, and `check_cues.py` clean.
 2. **Storyboard:** about 30 frames across the whole episode. Look at your own sheet first: overlaps, tiny figures, text on heads, missing glyphs (Fredoka has no arrows, so write `>`).
 3. **Pilot:** the first section rendered with the full mix; the user checks pacing, music level and characters.
