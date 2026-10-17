@@ -15,6 +15,9 @@ are shared, so an episode is mostly *deciding* what to show and when, not re-bui
 
 ## Pipeline at a glance
 
+**Where this sits in the full pipeline** (see `PIPELINE.md` at the faceless repo root): the pitch and the scripts come from `faceless-youtube-pipeline` and `lore-script-writer`; the voice comes from `charlotte-normal` (episodes) or `charlotte-ladeeda` (trailers, Shorts, specials), with the audio in `Eleven-labs-audio/audio/`. This skill picks up from the approved, voiced script and takes it to published files. Publishing to the platforms is `cross-channel-publishing`.
+
+
 There are three skills:
 - **explainer-series** (this one): the episode and the social pack.
 - **youtube-thumbnail**: the YouTube thumbnail plus TikTok and Instagram covers.
@@ -52,7 +55,7 @@ There are three skills:
   - `Short form/`;
   - `Carousels/`;
   - `Channel art/`.
-- Changes to the skills → vincent-media.
+- Changes to the skills → `lalaee/faceless` (`.claude/skills/`), the source of truth for the whole pipeline. `lalaee/Vincent-media` keeps a mirror.
 
 **User approval points:**
 1. Transcript and fact-check
@@ -109,6 +112,8 @@ $N/scripts/check.sh out/video.mp4 out/sync.jpg <hit times...>
 ```
 
 ### Fact-check with the Fandom wiki (every episode, before the plan)
+
+**Start from the script's own fact-check log.** Scripts written with `lore-script-writer` arrive with a Fandom fact-check log (claims, page permalinks). Read it first: those claims are already verified, so this step adds what the script check doesn't cover: on-screen spellings, and the **pictures** for every character, place and scene. Anything the log marks `[CHECK]` or unverified goes to the user before the storyboard.
 
 Lore episodes are about a real franchise, so check **both the script and the pictures** against the franchise's Fandom wiki before storyboarding. Seven Havens shipped with the city spelled "ELORA" (the wiki says **Ellora**) and with Pavi and Nisha drawn as invented designs (black hair, blue tunic) instead of the real ones (dark-purple hair, green eyes, yellow headband, yellow-green shawl). Both were found too late to fix.
 
