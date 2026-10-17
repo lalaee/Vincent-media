@@ -7,7 +7,7 @@ description: Turn a voice recording (narration, story, essay, explainer) into a 
 
 Pipeline: **recording → word-timed transcript → concept + shot list keyed to words → assets → storyboard of real rendered frames → approval → animate → mix → render → verify → deliver.**
 The picture is code (a web page that draws any time `t`), rendered frame by frame in headless Chromium by the
-[mg-styles-15](https://github.com/Vincentwei1021/mg-styles-15) toolkit, which also gives the 15 style prompts and the `mgaudio` sound library.
+[mg-styles-15](https://github.com/lalaee/mg-styles-15) toolkit (our fork of [Vincentwei1021/mg-styles-15](https://github.com/Vincentwei1021/mg-styles-15); `setup.sh` falls back to the original if the fork can't be reached), which also gives the 15 style prompts and the `mgaudio` sound library.
 Nothing here is specific to one style or story: the style prompt sets the look, the recording sets the timing.
 
 Scripts are in `scripts/`, templates in `templates/`. `$K` below means this skill's directory.

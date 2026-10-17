@@ -4,7 +4,13 @@
 # and writes r.sh, a render wrapper that knows where Chromium lives and how to render without a GPU.
 set -e
 WORK=${1:?usage: setup.sh <workdir>}; mkdir -p "$WORK"; cd "$WORK"
-[ -d mg ] || git clone --depth 1 https://github.com/Vincentwei1021/mg-styles-15 mg
+# Our fork first (lalaee/mg-styles-15); the original (Vincentwei1021) only if the fork can't be reached. Override with MG_REPO=<url>.
+if [ ! -d mg ]; then
+  for U in ${MG_REPO:-https://github.com/lalaee/mg-styles-15} https://github.com/Vincentwei1021/mg-styles-15; do
+    GIT_TERMINAL_PROMPT=0 git clone --depth 1 "$U" mg 2>/dev/null && { echo "toolkit: $U"; break; }; rm -rf mg
+  done
+  [ -d mg ] || { echo "could not clone mg-styles-15"; exit 1; }
+fi
 (cd mg && npm install --no-audit --no-fund >/dev/null 2>&1)
 [ -d venv ] || python3 -m venv venv
 # requirements.txt pins fail on Python 3.13: install the audio deps unpinned instead
